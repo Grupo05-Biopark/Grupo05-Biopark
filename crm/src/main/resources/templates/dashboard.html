@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,7 +50,7 @@
 </nav>
 <div>
     <!-- Conteúdo do dashboard aqui -->
-    <div th:replace="navbar :: navbar"></div>
+    <div th:replace="navbar"></div>
 </div>
 </body>
 </html>
