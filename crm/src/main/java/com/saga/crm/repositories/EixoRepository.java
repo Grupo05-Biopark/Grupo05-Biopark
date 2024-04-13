@@ -1,4 +1,7 @@
 package com.saga.crm.repositories;
 
-public interface EixoRepository {
+import com.saga.crm.model.Eixo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EixoRepository extends JpaRepository<Eixo, Long> {
 }
