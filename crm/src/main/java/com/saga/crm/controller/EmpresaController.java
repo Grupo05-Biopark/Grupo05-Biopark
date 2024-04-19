@@ -36,7 +36,19 @@ public class EmpresaController {
         model.addAttribute("empresa", new Empresa());
         model.addAttribute("portes", portes);
         model.addAttribute("setores", setores);
-        return "empresa";
+        return "empresa"; 
+    }
+
+    @GetMapping("/listaempresa")
+    public String listaEmpresa(Model model) {
+        List<Empresa> empresa= empresaService.getAllEmpresas();
+        List<Porte> portes = porteService.getAllPortes();
+        List<Setor> setores = setorService.getAllSetores();
+
+        model.addAttribute("empresa", empresa);
+        model.addAttribute("portes", portes);
+        model.addAttribute("setores", setores);
+        return "listaempresa";
     }
 
     @PostMapping("/empresa")

@@ -24,15 +24,7 @@ public class EmpresaService {
         return empresaRepository.save(empresa);
     }
 
-//    public List<Empresa> listarEmpresas() {
-//        return empresaRepository.findAll();
-//    }
-//
-//    public Optional<Empresa> buscarEmpresaPorId(Long id) {
-//        return empresaRepository.findById(id);
-//    }
-//
-//    public void excluirEmpresa(Long id) {
-//        empresaRepository.deleteById(id);
-//    }
+    public List<Empresa> getAllEmpresas() {
+        return empresaRepository.findAll();
+    }
 }
