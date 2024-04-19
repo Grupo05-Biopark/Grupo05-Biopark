@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PerguntasService {
@@ -19,5 +20,18 @@ public class PerguntasService {
 
     public List<Perguntas> getAllPerguntas() {
         return perguntasRepository.findAll();
+    }
+
+    public void save(Perguntas pergunta) {
+        perguntasRepository.save(pergunta);
+    }
+
+    public Perguntas getPerguntaById(Long id) {
+        Optional<Perguntas> optionalPergunta = perguntasRepository.findById(id);
+        return optionalPergunta.orElse(null);
+    }
+
+    public void excluirPergunta(Long id) {
+        perguntasRepository.deleteById(id);
     }
 }

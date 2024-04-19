@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perguntas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #b1d8ff;
+            padding-top: 20px;
+            z-index: 1030;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+        }
+        .content {
+            padding: 20px;
+        }
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -250px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .botaoSidebar {
+                display: block;
+            }
+        }
+
+        .row{
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+        }
+
+        .sidebar-ativo {
+            background-color: #2471ee;
+            color: white;
+        }
+
+        .row-imagem{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <button id="botaoSidebar" class="btn btn-primary d-block botaoSidebar" style="width: 8%;height: 8%;margin-bottom: 10px;margin-top: 10px;margin-left: 10px" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="sidebar">
+        <div class="row-imagem" >
+            <img th:src="@{/images/saga.png}" alt="Saga Image" />
+        </div>
+        <div class="list-group" style="margin-top: 8%;">
+            <a href="/perguntas" style="border: 0px;" class="list-group-item sidebar-ativo">Perguntas</a>
+            <a href="/empresas" style="background-color: #d6d6d6;border: 0px;" class="list-group-item list-group-item-action">Empresas</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 col-sm-12" style="margin-left: 3%">
+            <div class="row text-center" style="margin-top: 7%; margin-bottom: 2%">
+                <h2>Perguntas</h2>
+            </div>
+            <form id="formPergunta" action="perguntas/adicionar" method="post">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <h5 for="titulo">Título</h5>
+                            <input type="text" name="titulo" class="form-control shadow p-2 mb-3 bg-white rounded mt-2" id="titulo" placeholder="Digite o titulo">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <h5 for="descricao">Descrição</h5>
+                            <input type="text" name="descricao" class="form-control shadow p-2 mb-3 bg-white rounded mt-2" id="descricao" placeholder="Digite a descrição">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <h5 for="eixo">Eixo</h5>
+                            <select class="form-control shadow p-2 mb-3 bg-white rounded" id="eixo" name="eixo" >
+                                <option value="">Selecione um eixo</option>
+                                <option th:each="eixo : ${eixos}" th:value="${eixo.id}" name="" th:text="${eixo.titulo}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <h5 for="setor">Setor</h5>
+                            <select class="form-control shadow p-2 mb-3 bg-white rounded" id="setor" name="setor">
+                                <option value="">Selecione um setor</option>
+                                <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.titulo}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <h5 for="porte">Porte</h5>
+                            <select class="form-control shadow p-2 mb-2 bg-white rounded" id="porte" name="porte">
+                                <option value="">Selecione um porte</option>
+                                <option th:each="porte : ${portes}" th:value="${porte.id}" th:text="${porte.titulo}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group text-center" style="margin-top: 6%">
+                            <button type="submit" class="btn btn-primary btn-lg" style="width: 70%; background-color: #2471ee">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row" style="margin-top: 30px;">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body" style="overflow-x: auto;">
+                            <table class="table" style="max-height: 200px; overflow-y: auto;">
+                                <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Eixo</th>
+                                    <th>Setor</th>
+                                    <th>Porte</th>
+                                    <th>Ações</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="pergunta : ${perguntas}">
+                                    <td class="align-middle" th:text="${pergunta.descricao}"></td>
+                                    <td class="align-middle" th:text="${pergunta.eixo.titulo}"></td>
+                                    <td class="align-middle" th:text="${pergunta.setor.titulo}"></td>
+                                    <td class="align-middle" th:text="${pergunta.porte.titulo}"></td>
+                                    <td>
+                                        <a th:href="@{/perguntas/editar/{id}(id=${pergunta.id})}" class="btn btn-primary" style="background-color: #2471ee">Editar</a>
+                                        <a class="btn btn-danger excluir-pergunta"  th:onclick="'excluirPergunta(\'' + ${pergunta.id} + '\');'">Excluir</a>
+                                    </td>                                    
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar').classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(event) {
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarButton = document.querySelector('.botaoSidebar');
+        if (window.innerWidth <= 992 && !sidebar.contains(event.target) && !sidebarButton.contains(event.target)) {
+            sidebar.classList.remove('active');
+        }
+    });
+
+    function excluirPergunta(perguntaId) {
+        $.ajax({
+            url: '/perguntas/excluir/' + perguntaId,
+            type: 'POST',
+            data: {_method: 'DELETE'},
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Excluído com sucesso!',
+                    showConfirmButton: false,
+                    timer: 2500
+                }).then(function() {
+                    window.location.href = '/perguntas';
+                });
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro ao excluir a pergunta.'
+                });
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

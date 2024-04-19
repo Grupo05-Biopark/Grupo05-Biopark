@@ -31,6 +31,10 @@ public class Perguntas {
         this.setor = setor;
     }
 
+    public Perguntas() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

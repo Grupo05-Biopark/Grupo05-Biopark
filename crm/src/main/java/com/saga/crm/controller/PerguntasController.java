@@ -13,8 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -45,7 +50,55 @@ public class PerguntasController {
         model.addAttribute("eixos", eixos);
         model.addAttribute("setores", setores);
         model.addAttribute("portes", portes);
-        return "perguntas";
+        return "perguntas/index";
     }
+
+    @PostMapping("/perguntas/adicionar")
+    public String adicionarPergunta(Perguntas pergunta) {
+        
+        perguntasService.save(pergunta);
+        
+        return "redirect:/perguntas";
+    }
+
+    @GetMapping("/perguntas/editar/{id}")
+    public String editarPergunta(@PathVariable Long id, Model model) {
+        Perguntas pergunta = perguntasService.getPerguntaById(id);
+        List<Eixo> eixos = eixoService.getAllEixos();
+        List<Setor> setores = setorService.getAllSetores();
+        List<Porte> portes = porteService.getAllPortes();
+    
+        model.addAttribute("pergunta", pergunta);
+        model.addAttribute("eixos", eixos);
+        model.addAttribute("setores", setores);
+        model.addAttribute("portes", portes);
+
+        return "perguntas/editar";
+    }
+
+    @PostMapping("/perguntas/editar/{id}")
+    public String atualizarPergunta(@PathVariable Long id, @ModelAttribute Perguntas pergunta) {
+        Perguntas perguntaExistente = perguntasService.getPerguntaById(id);
+            
+        if (perguntaExistente != null) {
+            perguntaExistente.setTitulo(pergunta.getTitulo());
+            perguntaExistente.setDescricao(pergunta.getDescricao());
+            perguntaExistente.setEixo(pergunta.getEixo());
+            perguntaExistente.setPorte(pergunta.getPorte());
+            perguntaExistente.setSetor(pergunta.getSetor());
+    
+            perguntasService.save(perguntaExistente);
+        }
+            
+        return "redirect:/perguntas";
+    }
+
+    @PostMapping("/perguntas/excluir/{id}")
+    public String excluirPergunta(@PathVariable Long id) {
+        perguntasService.excluirPergunta(id);
+        return "redirect:/perguntas";
+    }
+
+    
 
 }
