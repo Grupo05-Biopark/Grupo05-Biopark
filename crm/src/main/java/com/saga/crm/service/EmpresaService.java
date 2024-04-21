@@ -27,4 +27,17 @@ public class EmpresaService {
     public List<Empresa> getAllEmpresas() {
         return empresaRepository.findAll();
     }
+
+    public Empresa getEmpresaById(Long id) {
+        Optional<Empresa> optionalEmpresa = empresaRepository.findById(id);
+        return optionalEmpresa.orElse(null);
+    }
+
+    public Empresa editarEmpresa(Empresa empresa) {
+        return empresaRepository.save(empresa);
+    }
+
+    public void excluirEmpresa(Long id) {
+        empresaRepository.deleteById(id);
+    }
 }
