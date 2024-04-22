@@ -60,9 +60,7 @@
               <td th:text="${empresa.setor.titulo}"></td>
               <td th:text="${empresa.porte.titulo}"></td>
               <td>
-                <!-- Link para editar -->
-                <a th:href="@{'/editar/' + ${empresa.id}}" class="btn btn-warning">Editar</a>
-                <!-- Link para excluir -->
+                <a th:href="@{'/editar/' + ${empresa.id}}" class="btn btn-primary">Editar</a>
                 <a th:href="@{'/excluir/' + ${empresa.id}}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir esta empresa?')">Excluir</a>
               </td>
             </tr>
