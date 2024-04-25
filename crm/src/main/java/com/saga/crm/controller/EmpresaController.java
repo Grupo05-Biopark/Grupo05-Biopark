@@ -27,24 +27,24 @@ public class EmpresaController {
         this.setorService = setorService;
     }
 
-    @GetMapping("/empresa")
-    public String showEmpresaForm(Model model) {
+    @GetMapping("/empresas")
+    public String empresasForm(Model model) {
         List<Porte> portes = porteService.getAllPortes();
         List<Setor> setores = setorService.getAllSetores();
 
         model.addAttribute("empresa", new Empresa());
         model.addAttribute("portes", portes);
         model.addAttribute("setores", setores);
-        return "empresa";
+        return "empresas/index";
     }
 
-    @PostMapping("/submitEmpresa")
-    public String submitEmpresaForm(Empresa empresa) {
+    @PostMapping("/empresas/adicionar")
+    public String adicionarEmpresa(Empresa empresa) {
         empresaService.cadastrarEmpresa(empresa);
-        return "redirect:/empresa";
+        return "redirect:/empresas";
     }
 
-    @GetMapping("/listaempresa")
+    @GetMapping("/empresas/listar")
     public String showListaEmpresa(Model model) {
         List<Empresa> empresas = empresaService.getAllEmpresas();
         List<Porte> portes = porteService.getAllPortes();
@@ -53,11 +53,11 @@ public class EmpresaController {
         model.addAttribute("empresas", empresas);
         model.addAttribute("portes", portes);
         model.addAttribute("setores", setores);
-        return "listaempresa";
+        return "empresas/list";
     }
 
-    @GetMapping("/editar/{id}")
-    public String showEditarEmpresaForm(@PathVariable Long id, Model model) {
+    @GetMapping("/empresas/editar/{id}")
+    public String editarEmpresa(@PathVariable Long id, Model model) {
         Empresa empresa = empresaService.getEmpresaById(id);
         List<Porte> portes = porteService.getAllPortes();
         List<Setor> setores = setorService.getAllSetores();
@@ -65,19 +65,19 @@ public class EmpresaController {
         model.addAttribute("empresa", empresa);
         model.addAttribute("portes", portes);
         model.addAttribute("setores", setores);
-        return "empresa"; // Redireciona para a página de cadastro
+        return "empresas/editar";
     }
 
-    @PostMapping("/editar/{id}")
+    @PostMapping("/empresas/editar/{id}")
     public String submitEditarEmpresaForm(@PathVariable Long id, Empresa empresa) {
         empresa.setId(id);
         empresaService.editarEmpresa(empresa);
-        return "redirect:/listaempresa";
+        return "redirect:/empresas/listar";
     }
 
-    @GetMapping("/excluir/{id}")
+    @PostMapping("/empresas/excluir/{id}")
     public String excluirEmpresa(@PathVariable Long id) {
         empresaService.excluirEmpresa(id);
-        return "redirect:/listaempresa";
+        return "redirect:/empresas/listar";
     }
 }

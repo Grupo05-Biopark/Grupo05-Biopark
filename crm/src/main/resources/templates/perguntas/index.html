@@ -6,50 +6,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 250px;
-            background-color: #b1d8ff;
-            padding-top: 20px;
-            z-index: 1030;
-            overflow-y: auto;
-            transition: left 0.3s ease;
-        }
-        .content {
-            padding: 20px;
-        }
-        @media (max-width: 992px) {
-            .sidebar {
-                left: -250px;
-            }
-            .sidebar.active {
-                left: 0;
-            }
-            .botaoSidebar {
-                display: block;
-            }
-        }
-
-        .row{
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
-        }
-
-        .sidebar-ativo {
-            background-color: #2471ee;
-            color: white;
-        }
-
-        .row-imagem{
-            display: flex;
-            justify-content: center;
-        }
-    </style>
 </head>
 <body>
     <button id="botaoSidebar" class="btn btn-primary d-block botaoSidebar" style="width: 8%;height: 8%;margin-bottom: 10px;margin-top: 10px;margin-left: 10px" onclick="toggleSidebar()">
@@ -123,7 +79,8 @@
                         <div class="card-body" style="overflow-x: auto;">
                             <table class="table" style="max-height: 200px; overflow-y: auto;">
                                 <thead>
-                                <tr>
+                                    <tr>
+                                    <th>Titulo</th>
                                     <th>Descrição</th>
                                     <th>Eixo</th>
                                     <th>Setor</th>
@@ -133,6 +90,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="pergunta : ${perguntas}">
+                                    <td class="align-middle" th:text="${pergunta.titulo}"></td>
                                     <td class="align-middle" th:text="${pergunta.descricao}"></td>
                                     <td class="align-middle" th:text="${pergunta.eixo.titulo}"></td>
                                     <td class="align-middle" th:text="${pergunta.setor.titulo}"></td>
@@ -191,6 +149,39 @@
         });
     }
 
+    document.getElementById('formPergunta').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+
+    console.log(formData);
+
+    $.ajax({
+        url: this.action,
+        type: this.method,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Salvo com sucesso!',
+                showConfirmButton: false,
+                timer: 2500
+            }).then(function() {
+                window.location.href = '/perguntas';
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ocorreu um erro ao salvar a pergunta.'
+            });
+        }
+    });
+});
 </script>
 </body>
 </html>
