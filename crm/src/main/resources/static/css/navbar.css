@@ -5,3 +5,46 @@ body{
 .content {
     padding: 20px;
 }
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #b1d8ff;
+    padding-top: 20px;
+    z-index: 1030;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+}
+.content {
+    padding: 20px;
+}
+@media (max-width: 992px) {
+    .sidebar {
+        left: -250px;
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .botaoSidebar {
+        display: block;
+    }
+}
+
+.row{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 100px;
+}
+
+.sidebar-ativo {
+    background-color: #2471ee;
+    color: white;
+}
+
+.row-imagem{
+    display: flex;
+    justify-content: center;
+}

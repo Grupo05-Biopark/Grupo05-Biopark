@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Empresa {
@@ -17,14 +19,22 @@ public class Empresa {
     private String numero;
     private String cep;
     private String complemento;
-    private Long porteId;
-    private Long setorId;
+
+    // Adicionar associação com a classe Porte
+    @ManyToOne
+    @JoinColumn(name = "porte_id")
+    private Porte porte;
+
+    // Adicionar associação com a classe Setor
+    @ManyToOne
+    @JoinColumn(name = "setor_id")
+    private Setor setor;
 
     public Empresa() {
 
     }
 
-    public Empresa(String nomeFantasia, String cnpj, String razaoSocial, String logradouro, String numero, String cep, String complemento, Long porteId, Long setorId) {
+    public Empresa(String nomeFantasia, String cnpj, String razaoSocial, String logradouro, String numero, String cep, String complemento, Porte porte, Setor setor) {
         this.nomeFantasia = nomeFantasia;
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
@@ -32,8 +42,8 @@ public class Empresa {
         this.numero = numero;
         this.cep = cep;
         this.complemento = complemento;
-        this.porteId = porteId;
-        this.setorId = setorId;
+        this.porte = porte;
+        this.setor = setor;
     }
 
     public Long getId() {
@@ -100,19 +110,19 @@ public class Empresa {
         this.complemento = complemento;
     }
 
-    public Long getPorteId() {
-        return porteId;
+    public Porte getPorte() {
+        return porte;
     }
 
-    public void setPorteId(Long porteId) {
-        this.porteId = porteId;
+    public void setPorte(Porte porte) {
+        this.porte = porte;
     }
 
-    public Long getSetorId() {
-        return setorId;
+    public Setor getSetor() {
+        return setor;
     }
 
-    public void setSetorId(Long setorId) {
-        this.setorId = setorId;
+    public void setSetor(Setor setor) {
+        this.setor = setor;
     }
 }
