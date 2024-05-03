@@ -112,54 +112,85 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
-<script>
-    function toggleSidebar() {
-        document.querySelector('.sidebar').classList.toggle('active');
-    }
-
-    document.addEventListener('click', function(event) {
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarButton = document.querySelector('.botaoSidebar');
-        if (window.innerWidth <= 992 && !sidebar.contains(event.target) && !sidebarButton.contains(event.target)) {
-            sidebar.classList.remove('active');
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
         }
-    });
 
-        // Verificar se o formulário de pergunta foi submetido
-    document.getElementById('formEmpresa').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        var formData = new FormData(this);
-
-        console.log(formData);
-
-        $.ajax({
-        url: this.action,
-        type: this.method,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Salvo com sucesso!',
-                showConfirmButton: false,
-                timer: 2500
-            }).then(function() {
-                window.location.href = '/empresas/listar';
-            });
-        },
-        error: function(xhr, status, error) {
-            console.log(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Ocorreu um erro ao salvar a empresa.'
-            });
-        }
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarButton = document.querySelector('.botaoSidebar');
+            if (window.innerWidth <= 992 && !sidebar.contains(event.target) && !sidebarButton.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
         });
-    });
-</script>
+
+        $(document).ready(function(){
+            $('#cnpj').mask('00.000.000/0000-00', {placeholder: ""});
+            $('#cep').mask('00000-000', {placeholder: ""});
+        });
+
+        document.getElementById('formEmpresa').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+
+            // Verificar se o CNPJ está cadastrado
+            $.ajax({
+                url: '/verificarCnpj?cnpj=' + cnpj,
+                type: 'GET',
+                success: function(response) {
+                    if (response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Esse CNPJ já está cadastrado.'
+                        });
+                    } else {
+                        // Se o CNPJ não estiver cadastrado, enviar o formulário
+                        var formData = new FormData(document.getElementById('formEmpresa'));
+
+                        $.ajax({
+                            url: document.getElementById('formEmpresa').action,
+                            type: document.getElementById('formEmpresa').method,
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Salvo com sucesso!',
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                }).then(function() {
+                                    window.location.href = '/empresas/listar';
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Não foi possível concluir o cadastro devido a um CNPJ duplicado.'
+                                });
+                            }
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocorreu um erro ao verificar o CNPJ.'
+                    });
+                }
+            });
+        });
+    </script>
+
+
 </body>
 </html>
