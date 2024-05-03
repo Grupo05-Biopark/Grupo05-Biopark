@@ -10,7 +10,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
-function toggleDropdown() {
+function toggleDropdownEmpresas() {
     var dropdownMenu = document.getElementById('dropdownEmpresas').querySelector('.dropdown-menu');
     if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
         dropdownMenu.style.display = 'block';
@@ -18,5 +18,14 @@ function toggleDropdown() {
         dropdownMenu.style.display = 'none';
     }
 }
+function toggleDropdownChecklists() {
+    var dropdownMenu = document.getElementById('dropdownChecklists').querySelector('.dropdown-menu');
+    if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+        dropdownMenu.style.display = 'block';
+    } else {
+        dropdownMenu.style.display = 'none';
+    }
+}
 
-document.getElementById('dropdownEmpresas').addEventListener('click', toggleDropdown);
+document.getElementById('dropdownEmpresas').addEventListener('click', toggleDropdownEmpresas);
+document.getElementById('dropdownChecklists').addEventListener('click', toggleDropdownChecklists);

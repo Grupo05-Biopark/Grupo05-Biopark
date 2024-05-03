@@ -20,4 +20,8 @@ public class SetorService {
     public List<Setor> getAllSetores() {
         return setorRepository.findAll();
     }
+
+    public Setor getSetorById(Long id) {
+        return setorRepository.findById(id).orElse(null);
+    }
 }
