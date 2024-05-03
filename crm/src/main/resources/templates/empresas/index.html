@@ -110,9 +110,9 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
     <script>
         function toggleSidebar() {
@@ -134,6 +134,26 @@
 
         document.getElementById('formEmpresa').addEventListener('submit', function(event) {
             event.preventDefault();
+
+            // Validar se todos os campos obrigatórios estão preenchidos
+            var camposValidos = true;
+            var camposObrigatorios = document.querySelectorAll('.form-control[required]');
+            camposObrigatorios.forEach(function(campo) {
+                if (campo.value.trim() === '') {
+                    camposValidos = false;
+                    return;
+                }
+            });
+
+            if (!camposValidos) {
+                // Exibir mensagem de erro se algum campo obrigatório não estiver preenchido
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Por favor, preencha todos os campos obrigatórios.'
+                });
+                return;
+            }
 
             var cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
 
@@ -169,11 +189,11 @@
                                 });
                             },
                             error: function(xhr, status, error) {
-                                console.log(error);
+                                var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Ocorreu um erro ao processar a requisição.';
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
-                                    text: 'Não foi possível concluir o cadastro devido a um CNPJ duplicado.'
+                                    text: errorMessage
                                 });
                             }
                         });
@@ -190,6 +210,8 @@
             });
         });
     </script>
+
+
 
 
 </body>
