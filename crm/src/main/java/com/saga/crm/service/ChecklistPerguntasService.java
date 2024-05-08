@@ -1,6 +1,5 @@
 package com.saga.crm.service;
 
-import com.saga.crm.model.Checklist;
 import com.saga.crm.model.ChecklistPerguntas;
 import com.saga.crm.repositories.ChecklistPerguntasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,9 @@ public class ChecklistPerguntasService {
         checklistPerguntasRepository.save(checklistPerguntas);
     }
 
-    public List<ChecklistPerguntas> getByChecklist(Checklist checklist) {
-        return checklistPerguntasRepository.findByChecklist(checklist);
+
+    public List<Object[]> perguntasByChecklist(Long id) {
+        return checklistPerguntasRepository.findPerguntasByChecklistId(id);
     }
 
 }

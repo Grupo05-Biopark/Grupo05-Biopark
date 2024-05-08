@@ -1,14 +1,20 @@
 package com.saga.crm.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saga.crm.model.*;
 import com.saga.crm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ChecklistController {
@@ -36,6 +42,7 @@ public class ChecklistController {
         List<Eixo> eixos = eixoService.getAllEixos();
         List<Setor> setores = setorService.getAllSetores();
         List<Porte> portes = porteService.getAllPortes();
+
 
         model.addAttribute("eixos", eixos);
         model.addAttribute("setores", setores);
@@ -100,6 +107,7 @@ public class ChecklistController {
         return "checklists/list";
     }
 
+
     @PostMapping("/checklists/inativar/{id}")
     public String inativarChecklist(@PathVariable Long id) {
         Checklist checklist = checklistService.getChecklistById(id);
@@ -109,25 +117,38 @@ public class ChecklistController {
         return "redirect:/checklists/listar";
     }
 
+
     @GetMapping("/checklists/{id}/perguntas")
     @ResponseBody
-    public List<Perguntas> getPerguntasByChecklistId(@PathVariable Long id) {
-        // Obter o checklist
-        Checklist checklist = checklistService.getChecklistById(id);
-
-        // Obter todas as ChecklistPerguntas vinculadas a este checklist
-        List<ChecklistPerguntas> checklistPerguntas = checklistPerguntasService.getByChecklist(checklist);
-
-        // Lista para armazenar todas as perguntas
-        List<Perguntas> perguntas = new ArrayList<>();
-
-        // Iterar sobre todas as ChecklistPerguntas e obter as perguntas associadas
-        for (ChecklistPerguntas cp : checklistPerguntas) {
-            perguntas.add(cp.getPerguntas());
-        }
-
-        return perguntas;
+    public ResponseEntity<List<Object[]>> getPerguntasByChecklistId(@PathVariable Long id) {
+        List<Object[]> perguntasArray = checklistPerguntasService.perguntasByChecklist(id);
+        return ResponseEntity.ok(perguntasArray);
     }
 
+    @GetMapping("/checklists/editar/{id}")
+    @ResponseBody
+    public ResponseEntity<Checklist> editarChecklist(@PathVariable Long id) {
+        Checklist checklistTitulosDescricao = checklistService.getChecklistById(id);
+        return ResponseEntity.ok(checklistTitulosDescricao);
+    }
+
+
+    @PutMapping("/checklists/editar/{id}")
+    @ResponseBody
+    public String editarChecklist(@PathVariable Long id, @RequestBody Checklist checklistAtualizado) {
+        // Recupere o checklist existente pelo ID
+        Checklist checklistExistente = checklistService.getChecklistById(id);
+
+        if (checklistExistente != null) {
+            checklistExistente.setTitulo(checklistAtualizado.getTitulo());
+            checklistExistente.setDescricao(checklistAtualizado.getDescricao());
+
+            // Salve o checklist atualizado
+            checklistService.save(checklistExistente);
+        }
+
+        // Redirecione para a página de listagem de checklists
+        return "redirect:/checklists";
+    }
 
 }
