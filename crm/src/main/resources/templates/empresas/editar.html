@@ -17,21 +17,8 @@
             <img th:src="@{/images/saga.png}" alt="Saga Image" />
         </div>
         <div class="list-group" style="margin-top: 8%;">
-            <a href="/perguntas" style="border: 0px;" class="list-group-item ">Perguntas</a>
-            <div class="list-group-item list-group-item-action dropdown-toggle sidebar-ativo" id="dropdownEmpresas">
-                Empresas
-                <div class="dropdown-menu" aria-labelledby="dropdownEmpresas">
-                    <a class="dropdown-item" href="/empresas">Adicionar</a>
-                    <a class="dropdown-item" href="/empresas/listar">Listar</a>
-                </div>
-            </div>
-            <div class="list-group-item list-group-item-action dropdown-toggle" id="dropdownChecklists">
-                Checklists
-                <div class="dropdown-menu" aria-labelledby="dropdownChecklists">
-                    <a class="dropdown-item" href="/checklists">Adicionar</a>
-                    <a class="dropdown-item" href="/checklists/listar">Listar</a>
-                </div>
-            </div>
+            <a href="/perguntas" style="background-color: #d6d6d6;border: 0px;" class="list-group-item">Perguntas</a>
+            <a href="/empresas" style="border: 0px;" class="list-group-item list-group-item-action sidebar-ativo">Empresas</a>
         </div>
     </div>
     <div class="row">
@@ -125,39 +112,103 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script th:src="@{/js/script.js}"></script>
-<script>
-    document.getElementById('formEmpresa').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var formData = new FormData(this);
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
-        $.ajax({
-        url: this.action,
-        type: this.method,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Editado com sucesso!',
-                showConfirmButton: false,
-                timer: 2500
-            }).then(function() {
-                window.location.href = '/empresas/listar';
-            });
-        },
-        error: function(xhr, status, error) {
-            console.log(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Ocorreu um erro ao salvar a empresa.'
-            });
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
         }
-    });
-    });
 
-</script>
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarButton = document.querySelector('.botaoSidebar');
+            if (window.innerWidth <= 992 && !sidebar.contains(event.target) && !sidebarButton.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        $(document).ready(function(){
+            $('#cnpj').mask('00.000.000/0000-00', {placeholder: ""});
+            $('#cep').mask('00000-000', {placeholder: ""});
+        });
+
+        document.getElementById('formEmpresa').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Validar se todos os campos obrigatórios estão preenchidos
+            var camposValidos = true;
+            var camposObrigatorios = document.querySelectorAll('.form-control[required]');
+            camposObrigatorios.forEach(function(campo) {
+                if (campo.value.trim() === '') {
+                    camposValidos = false;
+                    return;
+                }
+            });
+
+            if (!camposValidos) {
+                // Exibir mensagem de erro se algum campo obrigatório não estiver preenchido
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Por favor, preencha todos os campos obrigatórios.'
+                });
+                return;
+            }
+
+            var cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+
+            // Verificar se o CNPJ está cadastrado
+            $.ajax({
+                url: '/verificarCnpj?cnpj=' + cnpj,
+                type: 'GET',
+                success: function(response) {
+                    if (response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Esse CNPJ já está cadastrado.'
+                        });
+                    } else {
+                        // Se o CNPJ não estiver cadastrado, enviar o formulário
+                        var formData = new FormData(document.getElementById('formEmpresa'));
+
+                        $.ajax({
+                            url: document.getElementById('formEmpresa').action,
+                            type: document.getElementById('formEmpresa').method,
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Salvo com sucesso!',
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                }).then(function() {
+                                    window.location.href = '/empresas/listar';
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Ocorreu um erro ao processar a requisição.';
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: errorMessage
+                                });
+                            }
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ocorreu um erro ao verificar o CNPJ.'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
