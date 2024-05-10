@@ -1,4 +1,8 @@
 package com.saga.crm.repositories;
 
-public interface FormularioRepository {
+import com.saga.crm.model.Formulario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FormularioRepository extends JpaRepository<Formulario, Long> {
+
 }

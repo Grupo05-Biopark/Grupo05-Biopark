@@ -79,8 +79,14 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group text-center" style="margin-top: 6%">
+                    <div class="col-lg-2 d-flex align-items-center" style="margin-top: 3%">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check1" name="importante" value="1">
+                            <h5>Importante?</h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group text-center " style="margin-top: 10%">
                             <button type="submit" class="btn btn-primary btn-lg" style="width: 70%; background-color: #2471ee">Salvar</button>
                         </div>
                     </div>
@@ -98,7 +104,7 @@
                                     <th>Eixo</th>
                                     <th>Setor</th>
                                     <th>Porte</th>
-                                    <th>Ações</th>
+                                    <th class="text-center">Ações</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -108,9 +114,9 @@
                                     <td class="align-middle" th:text="${pergunta.eixo.titulo}"></td>
                                     <td class="align-middle" th:text="${pergunta.setor.titulo}"></td>
                                     <td class="align-middle" th:text="${pergunta.porte.titulo}"></td>
-                                    <td>
-                                        <a th:href="@{/perguntas/editar/{id}(id=${pergunta.id})}" class="btn btn-primary" style="background-color: #2471ee">Editar</a>
-                                        <a class="btn btn-danger excluir-pergunta"  th:onclick="'excluirPergunta(\'' + ${pergunta.id} + '\');'">Excluir</a>
+                                    <td class="d-flex">
+                                        <a th:href="@{/perguntas/editar/{id}(id=${pergunta.id})}" class="btn btn-primary m-1" style="background-color: #2471ee">Editar</a>
+                                        <a class="btn btn-danger excluir-pergunta m-1"  th:onclick="'excluirPergunta(\'' + ${pergunta.id} + '\');'">Excluir</a>
                                     </td>                                    
                                 </tr>
                                 </tbody>

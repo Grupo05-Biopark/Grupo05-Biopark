@@ -27,5 +27,15 @@ function toggleDropdownChecklists() {
     }
 }
 
+function toggleDropdownFormularios() {
+    var dropdownMenu = document.getElementById('dropdownFormularios').querySelector('.dropdown-menu');
+    if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+        dropdownMenu.style.display = 'block';
+    } else {
+        dropdownMenu.style.display = 'none';
+    }
+}
+
 document.getElementById('dropdownEmpresas').addEventListener('click', toggleDropdownEmpresas);
 document.getElementById('dropdownChecklists').addEventListener('click', toggleDropdownChecklists);
+document.getElementById('dropdownFormularios').addEventListener('click', toggleDropdownFormularios);
