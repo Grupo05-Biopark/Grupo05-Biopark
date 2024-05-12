@@ -5,12 +5,16 @@
   <title>Lista de Empresas</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-  <button id="botaoSidebar" class="btn btn-primary d-block botaoSidebar" style="width: 8%;height: 8%;margin-bottom: 10px;margin-top: 10px;margin-left: 10px" onclick="toggleSidebar()">
-      <i class="fa-solid fa-bars"></i>
-  </button>
+<header>
+    <button id="botaoSidebar" class="btn btn-primary d-block botaoSidebar" style="width: 8%;height: 8%;margin-bottom: 10px;margin-top: 10px;margin-left: 10px" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</header>
+<div class="header-space"></div> <!-- Elemento de espaço vazio -->
   <div class="sidebar">
     <div class="row-imagem" >
         <img th:src="@{/images/saga.png}" alt="Saga Image" />
@@ -53,8 +57,8 @@
               <tbody>
               <tr th:each="empresa : ${empresas}">
                 <td th:text="${empresa.nomeFantasia}"></td>
-                <td th:text="${empresa.cnpj}"></td>
-                <td th:text="${empresa.setor.titulo}"></td>
+                  <td th:text="${empresa.cnpj}" class="cnpj"></td>
+                  <td th:text="${empresa.setor.titulo}"></td>
                 <td th:text="${empresa.porte.titulo}"></td>
                 <td>
                   <a th:href="@{/empresas/editar/{id}(id=${empresa.id})}" class="btn btn-primary" style="background-color: #2471ee">Editar</a>
@@ -71,31 +75,46 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script th:src="@{/js/script.js}"></script>
-<script>
-  function excluirEmpresa(empresaId) {
-        $.ajax({
-            url: '/empresas/excluir/' + empresaId,
-            type: 'POST',
-            data: {_method: 'DELETE'},
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Excluído com sucesso!',
-                    showConfirmButton: false,
-                    timer: 2500
-                }).then(function() {
-                    window.location.href = '/empresas/listar';
-                });
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Ocorreu um erro ao excluir a empresa.'
-                });
-            }
-        });
-    }
-</script>
+  <script>
+      function excluirEmpresa(empresaId) {
+          $.ajax({
+              url: '/empresas/excluir/' + empresaId,
+              type: 'POST',
+              data: {_method: 'DELETE'},
+              success: function(response) {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Excluído com sucesso!',
+                      showConfirmButton: false,
+                      timer: 2500
+                  }).then(function() {
+                      window.location.href = '/empresas/listar';
+                  });
+              },
+              error: function(xhr, status, error) {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Ocorreu um erro ao excluir a empresa.'
+                  });
+              }
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+          var cnpjCells = document.querySelectorAll('.cnpj');
+
+          cnpjCells.forEach(function(cell) {
+              var cnpj = cell.textContent;
+              cell.textContent = formatCnpj(cnpj);
+          });
+      });
+
+      function formatCnpj(cnpj) {
+          return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+      }
+  </script>
+
+
 </body>
 </html>
