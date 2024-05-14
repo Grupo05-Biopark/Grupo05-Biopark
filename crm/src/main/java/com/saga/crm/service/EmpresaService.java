@@ -55,7 +55,9 @@ public class EmpresaService {
                 empresa.getRazaoSocial() == null || empresa.getRazaoSocial().isEmpty() ||
                 empresa.getLogradouro() == null || empresa.getLogradouro().isEmpty() ||
                 empresa.getNumero() == null || empresa.getNumero().isEmpty() ||
-                empresa.getCep() == null || empresa.getCep().isEmpty()) {
+                empresa.getCep() == null || empresa.getCep().isEmpty() ||
+                empresa.getSetor() == null ||
+                empresa.getPorte() == null) {
             throw new CamposObrigatoriosException("Todos os campos são obrigatórios.");
         }
 
@@ -68,6 +70,7 @@ public class EmpresaService {
         }
     }
 
+
     private void validarEmpresaEditar(Empresa empresa) {
         if (empresa == null ||
                 empresa.getNomeFantasia() == null || empresa.getNomeFantasia().isEmpty() ||
@@ -75,7 +78,9 @@ public class EmpresaService {
                 empresa.getRazaoSocial() == null || empresa.getRazaoSocial().isEmpty() ||
                 empresa.getLogradouro() == null || empresa.getLogradouro().isEmpty() ||
                 empresa.getNumero() == null || empresa.getNumero().isEmpty() ||
-                empresa.getCep() == null || empresa.getCep().isEmpty()) {
+                empresa.getCep() == null || empresa.getCep().isEmpty() ||
+                empresa.getSetor() == null ||
+                empresa.getPorte() == null) {
             throw new CamposObrigatoriosException("Todos os campos são obrigatórios.");
         }
     }
