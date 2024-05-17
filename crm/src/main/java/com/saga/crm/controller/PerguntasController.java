@@ -20,8 +20,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @Controller
 public class PerguntasController {
     private final PerguntasService perguntasService;
@@ -30,13 +28,13 @@ public class PerguntasController {
     private final PorteService porteService;
 
     @Autowired
-    public PerguntasController(PerguntasService perguntasService, EixoService eixoService, SetorService setorService, PorteService porteService) {
+    public PerguntasController(PerguntasService perguntasService, EixoService eixoService, SetorService setorService,
+            PorteService porteService) {
         this.perguntasService = perguntasService;
         this.eixoService = eixoService;
         this.setorService = setorService;
         this.porteService = porteService;
     }
-
 
     @GetMapping("/perguntas")
     public String perguntasForm(Model model) {
@@ -44,7 +42,6 @@ public class PerguntasController {
         List<Eixo> eixos = eixoService.getAllEixos();
         List<Setor> setores = setorService.getAllSetores();
         List<Porte> portes = porteService.getAllPortes();
-
 
         model.addAttribute("perguntas", perguntas);
         model.addAttribute("eixos", eixos);
@@ -55,9 +52,9 @@ public class PerguntasController {
 
     @PostMapping("/perguntas/adicionar")
     public String adicionarPergunta(Perguntas pergunta) {
-        
+
         perguntasService.save(pergunta);
-        
+
         return "redirect:/perguntas";
     }
 
@@ -67,7 +64,7 @@ public class PerguntasController {
         List<Eixo> eixos = eixoService.getAllEixos();
         List<Setor> setores = setorService.getAllSetores();
         List<Porte> portes = porteService.getAllPortes();
-    
+
         model.addAttribute("pergunta", pergunta);
         model.addAttribute("eixos", eixos);
         model.addAttribute("setores", setores);
@@ -79,17 +76,17 @@ public class PerguntasController {
     @PostMapping("/perguntas/editar/{id}")
     public String atualizarPergunta(@PathVariable Long id, @ModelAttribute Perguntas pergunta) {
         Perguntas perguntaExistente = perguntasService.getPerguntaById(id);
-            
+
         if (perguntaExistente != null) {
             perguntaExistente.setTitulo(pergunta.getTitulo());
             perguntaExistente.setDescricao(pergunta.getDescricao());
             perguntaExistente.setEixo(pergunta.getEixo());
             perguntaExistente.setPorte(pergunta.getPorte());
             perguntaExistente.setSetor(pergunta.getSetor());
-    
+
             perguntasService.save(perguntaExistente);
         }
-            
+
         return "redirect:/perguntas";
     }
 
@@ -98,7 +95,5 @@ public class PerguntasController {
         perguntasService.excluirPergunta(id);
         return "redirect:/perguntas";
     }
-
-    
 
 }

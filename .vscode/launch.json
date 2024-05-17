@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-Main<crm>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.saga.crm.Main",
+      "projectName": "crm",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

@@ -16,10 +16,8 @@ public class LoginController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @GetMapping("/login")
     public String loginForm() {
         return "login";
@@ -27,15 +25,11 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginSubmit(@RequestParam String email, @RequestParam String senha) {
-        try {
-            Usuario usuario = usuarioRepository.findByEmail(email);
-            if (usuario != null && bCryptPasswordEncoder.matches(senha, usuario.getSenha())) {
-                return "redirect:/dashboard";
-            }
-            return "redirect:/login";
-        } catch (Exception e) {
-            return "redirect:/login";
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario != null && bCryptPasswordEncoder.matches(senha, usuario.getSenha())) {
+            return "redirect:/dashboard";
         }
+        return "redirect:/login";
     }
 
     @GetMapping("/cadastro")
@@ -44,18 +38,21 @@ public class LoginController {
     }
 
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@RequestParam String nome, @RequestParam String email, @RequestParam String senha, RedirectAttributes attributes) {
+    public String cadastrarUsuario(@RequestParam String nome, @RequestParam String email, @RequestParam String senha) {
         if (usuarioRepository.findByEmail(email) != null) {
-            attributes.addFlashAttribute("error", "Email já cadastrado.\nFavor utilize outro email.");
             return "redirect:/cadastro";
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setNome(nome);
-        usuario.setEmail(email);
-        usuario.setSenha(bCryptPasswordEncoder.encode(senha));
-        usuarioRepository.save(usuario);
+            Usuario usuario = new Usuario();
+            usuario.setNome(nome);
+            usuario.setEmail(email);
+            usuario.setSenha(bCryptPasswordEncoder.encode(senha));
+            usuarioRepository.save(usuario);
 
-        return "redirect:/login";
+            return "redirect:/login";
+        } catch (Exception e) {
+            attributes.addFlashAttribute("error", "Erro ao tentar cadastrar usuário.\nColoque credenciais válidas.");
+            return "redirect:/cadastro";
+        }
     }
 }
