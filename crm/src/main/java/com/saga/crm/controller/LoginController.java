@@ -16,8 +16,10 @@ public class LoginController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping("/login")
     public String loginForm() {
         return "login";
@@ -38,10 +40,11 @@ public class LoginController {
     }
 
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@RequestParam String nome, @RequestParam String email, @RequestParam String senha) {
-        if (usuarioRepository.findByEmail(email) != null) {
-            return "redirect:/cadastro";
-        }
+    public String cadastrarUsuario(@RequestParam String nome, @RequestParam String email, @RequestParam String senha, RedirectAttributes attributes) {
+        try {
+            if (usuarioRepository.findByEmail(email) != null) {
+                return "redirect:/cadastro";
+            }
 
             Usuario usuario = new Usuario();
             usuario.setNome(nome);
