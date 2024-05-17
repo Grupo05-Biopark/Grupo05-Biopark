@@ -1,15 +1,15 @@
 package com.saga.crm.controller;
 
-import com.saga.crm.model.Usuario;
-import com.saga.crm.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import com.saga.crm.model.Usuario;
+import com.saga.crm.repositories.UsuarioRepository;
 
 @Controller
 public class LoginController {
@@ -27,11 +27,15 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginSubmit(@RequestParam String email, @RequestParam String senha) {
-        Usuario usuario = usuarioRepository.findByEmail(email);
-        if (usuario != null && bCryptPasswordEncoder.matches(senha, usuario.getSenha())) {
-            return "redirect:/dashboard";
+        try {
+            Usuario usuario = usuarioRepository.findByEmail(email);
+            if (usuario != null && bCryptPasswordEncoder.matches(senha, usuario.getSenha())) {
+                return "redirect:/dashboard";
+            }
+            return "redirect:/login";
+        } catch (Exception e) {
+            return "redirect:/login";
         }
-        return "redirect:/login";
     }
 
     @GetMapping("/cadastro")
@@ -40,8 +44,9 @@ public class LoginController {
     }
 
     @PostMapping("/cadastro")
-    public String cadastrarUsuario(@RequestParam String nome, @RequestParam String email, @RequestParam String senha) {
+    public String cadastrarUsuario(@RequestParam String nome, @RequestParam String email, @RequestParam String senha, RedirectAttributes attributes) {
         if (usuarioRepository.findByEmail(email) != null) {
+            attributes.addFlashAttribute("error", "Email já cadastrado.\nFavor utilize outro email.");
             return "redirect:/cadastro";
         }
 
