@@ -22,6 +22,7 @@ public class EmpresaService {
 
     public Empresa cadastrarEmpresa(Empresa empresa) {
         validarEmpresa(empresa);
+        empresa.setCnpj(formatarCnpj(empresa.getCnpj())); // Formata o CNPJ antes de salvar
         return empresaRepository.save(empresa);
     }
 
@@ -34,7 +35,8 @@ public class EmpresaService {
     }
 
     public Empresa editarEmpresa(Empresa empresa) {
-        validarEmpresa(empresa);
+        validarEmpresaEditar(empresa);
+        empresa.setCnpj(formatarCnpj(empresa.getCnpj())); // Formata o CNPJ antes de editar
         return empresaRepository.save(empresa);
     }
 
@@ -53,7 +55,9 @@ public class EmpresaService {
                 empresa.getRazaoSocial() == null || empresa.getRazaoSocial().isEmpty() ||
                 empresa.getLogradouro() == null || empresa.getLogradouro().isEmpty() ||
                 empresa.getNumero() == null || empresa.getNumero().isEmpty() ||
-                empresa.getCep() == null || empresa.getCep().isEmpty()) {
+                empresa.getCep() == null || empresa.getCep().isEmpty() ||
+                empresa.getSetor() == null ||
+                empresa.getPorte() == null) {
             throw new CamposObrigatoriosException("Todos os campos são obrigatórios.");
         }
 
@@ -66,10 +70,29 @@ public class EmpresaService {
         }
     }
 
+
+    private void validarEmpresaEditar(Empresa empresa) {
+        if (empresa == null ||
+                empresa.getNomeFantasia() == null || empresa.getNomeFantasia().isEmpty() ||
+                empresa.getCnpj() == null || empresa.getCnpj().isEmpty() ||
+                empresa.getRazaoSocial() == null || empresa.getRazaoSocial().isEmpty() ||
+                empresa.getLogradouro() == null || empresa.getLogradouro().isEmpty() ||
+                empresa.getNumero() == null || empresa.getNumero().isEmpty() ||
+                empresa.getCep() == null || empresa.getCep().isEmpty() ||
+                empresa.getSetor() == null ||
+                empresa.getPorte() == null) {
+            throw new CamposObrigatoriosException("Todos os campos são obrigatórios.");
+        }
+    }
+
     private boolean validarCnpj(String cnpj) {
         cnpj = cnpj.replaceAll("[^0-9]", "");
 
         return cnpj.length() == 14 && !Pattern.matches("(\\d)\\1{13}", cnpj);
+    }
+
+    private String formatarCnpj(String cnpj) {
+        return cnpj.replaceAll("[^0-9]", ""); // Remove a pontuação do CNPJ
     }
 
     public static class CamposObrigatoriosException extends RuntimeException {
