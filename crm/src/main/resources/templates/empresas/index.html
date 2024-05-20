@@ -146,7 +146,6 @@
             });
 
             if (!camposValidos) {
-                // Exibir mensagem de erro se algum campo obrigatório não estiver preenchido
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -157,7 +156,7 @@
 
             var cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
 
-            // Verificar se o CNPJ está cadastrado
+
             $.ajax({
                 url: '/verificarCnpj?cnpj=' + cnpj,
                 type: 'GET',
@@ -169,7 +168,6 @@
                             text: 'Esse CNPJ já está cadastrado.'
                         });
                     } else {
-                        // Se o CNPJ não estiver cadastrado, enviar o formulário
                         var formData = new FormData(document.getElementById('formEmpresa'));
 
                         $.ajax({
