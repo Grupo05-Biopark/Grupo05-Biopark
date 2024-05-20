@@ -74,14 +74,14 @@
                             <a class="dropdown-item" href="/empresas/listar">Listar</a>
                         </div>
                     </div>
-                    <div class="list-group-item list-group-item-action dropdown-toggle" id="dropdownChecklists">
+                    <div class="list-group-item list-group-item-action dropdown-toggle sidebar-ativo" id="dropdownChecklists">
                         Checklists
                         <div class="dropdown-menu" aria-labelledby="dropdownChecklists">
                             <a class="dropdown-item" href="/checklists">Adicionar</a>
                             <a class="dropdown-item" href="/checklists/listar">Listar</a>
                         </div>
                     </div>
-                    <div class="list-group-item list-group-item-action dropdown-toggle sidebar-ativo" id="dropdownFormularios">
+                    <div class="list-group-item list-group-item-action dropdown-toggle" id="dropdownFormularios">
                         Formulários
                         <div class="dropdown-menu" aria-labelledby="dropdownFormularios">
                             <a class="dropdown-item" href="/formulario">Adicionar</a>
@@ -202,6 +202,7 @@
     <script>
 
         $('input[name="all"]').on('change', function () {
+            // Pecorrer o length, verificar se tem mais de 3 marcados, e liberar o botão
             var check = $(this).is(':checked');
             if (check) {
                 $('input[name="perguntas"]').prop('checked', true);

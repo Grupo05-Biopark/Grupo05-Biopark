@@ -68,7 +68,16 @@ function toggleDropdownFormularios() {
     }
 }
 
+function toggleDropdownUsuarios() {
+    closeAllDropdowns();
+    var dropdownMenu = document.getElementById('dropdownUsuarios').querySelector('.dropdown-menu');
+    if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+        dropdownMenu.style.display = 'block';
+    }
+}
+
 // Event listeners para cada menu suspenso
 document.getElementById('dropdownEmpresas').addEventListener('click', toggleDropdownEmpresas);
 document.getElementById('dropdownChecklists').addEventListener('click', toggleDropdownChecklists);
 document.getElementById('dropdownFormularios').addEventListener('click', toggleDropdownFormularios);
+document.getElementById('dropdownUsuarios').addEventListener('click', toggleDropdownUsuarios);

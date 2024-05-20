@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link th:href="@{/css/navbar.css}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 <header>
@@ -57,7 +60,7 @@
       </ul>
     </div>
   </nav>
-<nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
   <div class="position-sticky">
     <div class="list-group list-group-flush mx-3 mt-4">
       <div class="row-imagem" >
@@ -93,36 +96,255 @@
   </div>
 </nav>
 </header>
-<div class="main">
-  <div class="container pt-4" >
-    <div class="row">
-      <div class="col-md-9 col-sm-12">
-        <div class="row" >
-          <h2>Cadastrar Formulário</h2>
+<main>
+  <div class="container pt-4">
+    <form id="formFormulario" action="formulario/adicionar" method="post">
+          <div class="row text-center">
+            <h2>Cadastrar Formulário</h2>
+          </div>
+      <div class="row" style="margin-top: 3%;">
+        <div class="col-md-4 col-sm-9">
+          <h5>Título</h5>
+          <div class="form-group">
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Insira o título">
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-9">
+          <h5>Descrição</h5>
+          <div class="form-group">
+            <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Insira a descrição">
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row" style="margin-top: 3%">
-      <div class="col-md-9 col-sm-12">
-        <h5>Selecione um Checklist do Eixo Ambiental</h5>
+      <div class="row align-left" style="margin-top: 3%;">
+        <div class="col-md-4 col-sm-9">
+            <h5>Selecione um Checklist do Eixo Ambiental</h5>
+          <div class="form-group">
+            <select id="ambientalChecklist" class="form-select" name="ambientalChecklist">
+              <option value="">Selecione um Checklist do Eixo Ambiental</option>
+              <!-- Iterar sobre os checklists do eixo ambiental -->
+              <option th:each="checklist : ${ambientalChecklists}" th:value="${checklist.id}" th:text="${checklist.titulo}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-9" style="display: flex; align-items: flex-end">
+          <div>
+            <a onclick="" id="visualizarAmbiental" data-bs-toggle="modal" data-bs-target="#modalVisualizarChecklistAmbiental" class="btn btn-primary">Visualizar Checklist</a>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 3%;">
+        <div class="col-md-4 col-sm-9">
+            <h5>Selecione um Checklist do Eixo Governança</h5>
+          <div class="form-group">
+            <select id="governancaChecklist" class="form-select" name="governancaChecklist">
+              <option value="">Selecione um Checklist do Eixo Governança</option>
+              <option th:each="checklist : ${governancaChecklists}" th:value="${checklist.id}" th:text="${checklist.titulo}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-9" style="display: flex; align-items: flex-end">
+          <div>
+            <a onclick="" id="visualizarGovernanca" data-bs-toggle="modal" data-bs-target="#modalVisualizarChecklistGovernanca" class="btn btn-primary">Visualizar Checklist</a>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 3%;">
+        <div class="col-md-4 col-sm-9">
+            <h5>Selecione um Checklist do Eixo Social</h5>
+          <div class="form-group">
+            <select id="socialChecklist" class="form-select" name="socialChecklist">
+              <option value="">Selecione um Checklist do Eixo Social</option>
+              <option th:each="checklist : ${socialChecklists}" th:value="${checklist.id}" th:text="${checklist.titulo}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-9" style="display: flex; align-items: flex-end">
+          <div>
+            <a onclick="" id="visualizarSocial" data-bs-toggle="modal" data-bs-target="#modalVisualizarChecklistSocial" class="btn btn-primary">Visualizar Checklist</a>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 3%;margin-bottom: 10%">
+        <div class="col-md-4 col-sm-9">
+          <button type="submit" style="width: 100%" class="btn btn-primary btn-salvar">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:src="@{/js/script.js}"></script>
+<script>
+  document.getElementById('ambientalChecklist').onchange = function() {
+    var selectedId = this.value;
+    document.getElementById('visualizarAmbiental').onclick = function() {
+      visualizarChecklist(selectedId);
+    }
+  }
+  document.getElementById('governancaChecklist').onchange = function() {
+    var selectedId = this.value;
+    document.getElementById('visualizarGovernanca').onclick = function() {
+      visualizarChecklist(selectedId);
+    }
+  }
+  document.getElementById('socialChecklist').onchange = function() {
+    var selectedId = this.value;
+    document.getElementById('visualizarSocial').onclick = function() {
+      visualizarChecklist(selectedId);
+    }
+  }
+
+  function visualizarChecklist(checklistId) {
+    $.ajax({
+      url: '/checklists/' + checklistId + '/perguntas',
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        var tableBody = $('.modal-body table tbody');
+        tableBody.empty();
+        response.forEach(function(checklistPergunta) {
+          var titulo = checklistPergunta[0];
+          var descricao = checklistPergunta[1];
+          var eixo = checklistPergunta[2];
+          var porte = checklistPergunta[3];
+          var setor = checklistPergunta[4];
+
+          var newRow = '<tr>' +
+                  '<td>' + titulo + '</td>' +
+                  '<td>' + descricao + '</td>' +
+                  '<td>' + eixo + '</td>' +
+                  '<td>' + setor + '</td>' +
+                  '<td>' + porte + '</td>' +
+                  '</tr>';
+          tableBody.append(newRow);
+        });
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+      }
+    });
+  }
+
+
+  $('.btn-salvar').on('click', function() {
+    event.preventDefault();
+    var formData = new FormData($('#formFormulario')[0]);
+    $.ajax({
+      url: $('#formFormulario').attr('action'),
+      type: $('#formFormulario').attr('method'),
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Salvo com sucesso!',
+          showConfirmButton: false,
+          timer: 2500
+        }).then(function() {
+          window.location.href = '/formulario';
+        });
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocorreu um erro ao salvar o formulario.'
+        });
+      }
+    });
+  });
+
+</script>
+</body>
+<div class="modal fade" id="modalVisualizarChecklistAmbiental" style="z-index: 4000" tabindex="-1" aria-labelledby="exampleModalAmbiental" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalAmbiental">Listagem de Perguntas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Eixo</th>
+            <th>Porte</th>
+            <th>Setor</th>
+          </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
-    <div class="row" style="margin-top: 3%">
-      <div class="col-md-9 col-sm-12">
-        <h5>Selecione um Checklist do Eixo Governança</h5>
+  </div>
+</div>
+<div class="modal fade" id="modalVisualizarChecklistGovernanca" style="z-index: 4000" tabindex="-1" aria-labelledby="exampleModalGovernanca" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalGovernanca">Listagem de Perguntas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Eixo</th>
+            <th>Porte</th>
+            <th>Setor</th>
+          </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
-    <div class="row" style="margin-top: 3%">
-      <div class="col-md-9 col-sm-12">
-        <h5>Selecione um Checklist do Eixo Social</h5>
+  </div>
+</div>
+<div class="modal fade" id="modalVisualizarChecklistSocial" style="z-index: 4000" tabindex="-1" aria-labelledby="exampleModalSocial" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalSocial">Listagem de Perguntas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Eixo</th>
+            <th>Porte</th>
+            <th>Setor</th>
+          </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script th:src="@{/js/script.js}"></script>
-</body>
 </html>

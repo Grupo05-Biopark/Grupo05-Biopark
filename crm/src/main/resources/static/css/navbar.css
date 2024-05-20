@@ -2,7 +2,6 @@ body{
     background-color: #bbc7d3;
 }
 
-
 @media (min-width: 991.98px) {
     main {
         padding-left: 240px;
@@ -18,7 +17,7 @@ body{
     padding: 58px 0 0; /* Height of navbar */
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
     width: 240px;
-    z-index: 2000;
+    z-index: 1200;
     transition: width 0.5s ease; /* Adiciona a transição */
 }
 
@@ -48,19 +47,12 @@ body{
     justify-content: center;
 }
 
-
-.navbar-toggler[data-mdb-collapse-init] {
-    z-index: 3000 !important; /* Ajuste o valor do z-index conforme necessário */
-}
-
-
-
 @media only screen and (min-width: 200px) {
     main {
-        margin-top: 18% ;
+        margin-top: 22% ;
     }
     .navbar{
-        height: 10% !important;
+        height: 5% !important;
     }
 
 }
@@ -81,3 +73,4 @@ body{
         height: 7% !important;
     }
 }
+
