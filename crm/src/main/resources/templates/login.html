@@ -22,29 +22,42 @@
     <div class="row">
       <div class="col-md-4">
         <div class="row">
-          <div class="col-md-4 mt-2" style="margin-left: 2%">
-            <img th:src="@{/images/saga.png}" alt="Saga Image" />
+          <div class="container mt-5">
+            <div class="row justify-content-center">
+              <div class="col-6 row justify-content-center">
+                <img
+                  th:src="@{/images/saga.png}"
+                  alt="Saga Image"
+                  style="max-width: 50%; height: auto" />
+              </div>
+            </div>
           </div>
           <div class="col-md-4"></div>
         </div>
-        <div class="row" style="margin-top: 30%">
+        <div class="row" style="margin-top: 10%">
           <div class="container text-left w-75">
             <h2 class="text-center">ENTRAR</h2>
             <p>Bem vindo! <br />Por favor insira seus dados de Login.</p>
             <hr />
           </div>
           <div class="container">
-            <form id="loginForm" method="post">
+            <form id="loginForm">
               <div class="container w-75 p-0">
                 <label for="email">Email</label><br />
                 <input type="email" id="email" name="email" required /><br />
                 <label for="senha">Senha</label><br />
-                <input
-                  type="password"
-                  id="senha"
-                  name="senha"
-                  required /><br /><br />
+                <input type="password" id="senha" name="senha" required />
+                <br /><br />
                 <input type="submit" value="Entrar" />
+                <p th:text="${error}"></p>
+                <div id="loadingIndicator" style="display: none">
+                  <i class="fas fa-spinner fa-spin"></i> Carregando...
+                </div>
+                <div class="d-flex justify-content-end">
+                  <a th:href="@{/esqueci-senha}" class="text-end"
+                    >Esqueceu a senha?</a
+                  >
+                </div>
               </div>
             </form>
           </div>
@@ -52,12 +65,13 @@
           <hr />
           <div class="container text-center p-0 m-0">
             <span
-              >Não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></span
+              >Não tem uma conta?
+              <a th:href="@{/cadastro}">Cadastre-se aqui.</a></span
             >
+            <p class="container text-center p-0 m-0">
+              Todos os direitos reservados à SAGA.
+            </p>
           </div>
-          <p class="container text-center p-0 m-0">
-            Todos os direitos reservados à SAGA.
-          </p>
         </div>
       </div>
       <div
@@ -91,51 +105,36 @@
           var email = $("#email").val();
           var senha = $("#senha").val();
 
-          // Função de validação dos campos e-mail e senha
+          function mostrarIndicadorDeCarregamento() {
+            $("#loadingIndicator").show();
+          }
+
+          function esconderIndicadorDeCarregamento() {
+            $("#loadingIndicator").hide();
+          }
           function validarCampos(email, senha) {
-            // Vai Verifica se o campo de e-mail está preenchido e é válido
-            if (!email) {
+            if (!email.trim()) {
               Swal.fire({
                 icon: "error",
-                title: "Oops...",
+                title: "Campo e-mail esta vazio...",
                 text: "Por favor, preencha o campo de e-mail.",
               });
               return false;
             }
 
-            // Vai Verifica se o e-mail tem um formato válido
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
+            if (!senha.trim()) {
               Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: "Por favor, insira um e-mail válido.",
-              });
-              return false;
-            }
-            // Validar o e-mail com o  que esta cadastrado no banco de dados(Ainda não implementado)
-            if (email.length < 5) {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "E-mail inválido. Por favor, insira um e-mail válido.",
-              });
-              return false;
-            }
-            // valida se a senha foi preenchida
-            if (!senha) {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
+                title: "Campo senha esta vazio...",
                 text: "Por favor, preencha o campo de senha.",
               });
               return false;
             }
-            // Validar com o banco de dados a senha(Ainda não implementado)
+
             if (senha.length < 8) {
               Swal.fire({
                 icon: "error",
-                title: "Oops...",
+                title: "Senha não atende aos requisitos mínimos.",
                 text: "A senha deve ter pelo menos 8 caracteres.",
               });
               return false;
@@ -143,39 +142,40 @@
             return true;
           }
 
-          var camposValidos = validarCampos(email, senha);
-          if (!camposValidos) {
-            return;
-          }
+          if (validarCampos(email, senha)) {
+            mostrarIndicadorDeCarregamento();
 
-          $.ajax({
-            url: "/login",
-            method: "POST",
-            data: {
-              email: email,
-              senha: senha,
-            },
-            success: function (response) {
-              Swal.fire({
-                icon: "success",
-                title: "Sucesso",
-                text: "Login realizado com sucesso!",
-                showConfirmButton: false,
-                timer: 2000,
-              }).then(function () {
-                window.location.href = "/dashboard";
-              });
-            },
-            error: function (xhr, status, error) {
-              Swal.fire({
-                icon: "error",
-                title: "Erro",
-                text:
-                  xhr.responseJSON.error ||
-                  "Falha ao realizar login. Verifique suas credenciais e tente novamente.",
-              });
-            },
-          });
+            $.ajax({
+              url: "/login",
+              method: "POST",
+              data: {
+                email: email,
+                senha: senha,
+              },
+              success: function (response) {
+                esconderIndicadorDeCarregamento();
+                Swal.fire({
+                  icon: "success",
+                  title: "Sucesso",
+                  text: "Login realizado com sucesso!",
+                  showConfirmButton: false,
+                  timer: 2000,
+                }).then(function () {
+                  window.location.href = "/dashboard";
+                });
+              },
+              error: function (xhr, status, error) {
+                esconderIndicadorDeCarregamento();
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro",
+                  text:
+                    xhr.responseJSON.error ||
+                    "Falha ao realizar login. Verifique suas credenciais e tente novamente.",
+                });
+              },
+            });
+          }
         });
       });
     </script>
