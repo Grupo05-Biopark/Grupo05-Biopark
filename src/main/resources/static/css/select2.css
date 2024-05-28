@@ -1,0 +1,13 @@
+.select2-container .select2-selection--single {
+    display: flex;
+    align-items: center !important;
+    width: 100% !important;
+    background-color: white; /* Cor de fundo */
+    border-radius: 4px; /* Bordas arredondadas */
+    height: 40px; /* Altura */
+
+}
+
+.select2{
+    width: 100% !important;
+}

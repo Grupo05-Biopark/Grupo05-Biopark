@@ -1,0 +1,53 @@
+html,
+body {
+    overflow: hidden;
+    font-family: "Rubik";
+}
+.bg-color {
+    min-height: 100vh;
+    height: 100%;
+    max-height: 600px;
+    background-color: #0f6fc6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+h1 {
+    font-weight: 800;
+}
+h2 {
+    font-weight: 800;
+    font-family: "Rufina";
+}
+p {
+    font-size: 20px;
+}
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    width: 100%;
+}
+label {
+    font-size: 25px;
+    font-family: "Rubik";
+    width: 100px;
+}
+input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 50px; /* Deixa o botão redondo */
+    background: linear-gradient(45deg, #0F58C6, #FFFFFF); /* Adiciona um degradê */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0px 10px 46px 23px rgba(0, 0, 0, 0.006);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+input[type="submit"]:hover {
+    transform: scale(1.02);
+}
