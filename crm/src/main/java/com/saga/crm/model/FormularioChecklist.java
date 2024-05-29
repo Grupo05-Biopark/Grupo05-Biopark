@@ -2,6 +2,7 @@ package com.saga.crm.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,6 +17,9 @@ public class FormularioChecklist {
 
     @ManyToOne
     private Checklist checklist;
+
+    @OneToMany(mappedBy = "formularioChecklists")
+    private List<Respostas> respostas;
 
     public FormularioChecklist() {
     }

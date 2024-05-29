@@ -19,4 +19,8 @@ public class FormularioChecklistService {
     public void save(FormularioChecklist formularioChecklist) {
         formularioChecklistRepository.save(formularioChecklist);
     }
+
+    public FormularioChecklist findByFormularioAndChecklist(Long formularioId, Long checklistId) {
+        return formularioChecklistRepository.findByFormularioIdAndChecklistId(formularioId, checklistId);
+    }
 }

@@ -4,4 +4,5 @@ import com.saga.crm.model.FormularioChecklist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FormularioChecklistRepository  extends JpaRepository<FormularioChecklist, Long> {
+    FormularioChecklist findByFormularioIdAndChecklistId(Long formularioId, Long checklistId);
 }

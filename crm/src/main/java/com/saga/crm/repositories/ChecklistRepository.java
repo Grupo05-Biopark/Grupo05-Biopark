@@ -15,4 +15,8 @@ public interface ChecklistRepository extends JpaRepository<Checklist, Long> {
 
     @Query("SELECT c FROM Checklist c WHERE (:eixoId IS NULL OR c.eixo.id = :eixoId)")
     List<Checklist> findByEixo(@Param("eixoId") Integer eixoId);
+
+    @Query("SELECT c FROM Checklist c INNER JOIN FormularioChecklist fc ON c.id = fc.checklist.id WHERE fc.formulario.id = :formularioId AND c.eixo.id = :eixoId")
+    List<Checklist> findByFormularioIdAndEixo(@Param("formularioId") Long formularioId, @Param("eixoId") Long eixoId);
+
 }

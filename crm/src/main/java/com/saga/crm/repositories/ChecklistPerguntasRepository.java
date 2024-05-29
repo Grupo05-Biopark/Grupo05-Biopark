@@ -23,4 +23,7 @@ public interface ChecklistPerguntasRepository extends JpaRepository<ChecklistPer
     List<Object[]> findPerguntasByChecklistId(@Param("checklistId") Long checklistId);
 
 
+
+    @Query("SELECT p FROM ChecklistPerguntas cp JOIN cp.perguntas p WHERE cp.checklist.id = :checklistId")
+    List<Perguntas> findPerguntasByChecklistsId(@Param("checklistId") Long checklistId);
 }
