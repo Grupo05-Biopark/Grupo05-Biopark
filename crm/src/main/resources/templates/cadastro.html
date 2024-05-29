@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="PT-BR"></html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cadastro</title>
+    <title>Cadastro Usuário</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
@@ -13,69 +13,212 @@
     <link
       href="https://fonts.googleapis.com/css?family=Rufina"
       rel="stylesheet" />
-    <link th:href="@{/css/login.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/login.css" />
   </head>
   <body>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="row">
-          <div class="col-md-4 mt-2" style="margin-left: 2%">
-            <img th:src="@{/images/saga.png}" alt="Saga Image" />
-          </div>
-          <div class="col-md-4"></div>
-        </div>
-        <div class="row" style="margin-top: 30%">
-          <div class="container text-left w-75">
-            <h2>CADASTRAR USUÁRIO</h2>
-            <p>
-              Bem vindo ao Cadastro!<br />Por favor insira seus dados válidos.
-            </p>
-            <hr />
-          </div>
-          <div class="container">
-            <form action="/cadastro" method="post">
-              <div class="container w-75 p-0">
-                <label for="email">Email</label><br />
-                <input type="email" id="email" name="email" required /><br />
-                <label for="nome">Nome</label><br />
-                <input type="text" id="nome" name="nome" required /><br />
-                <label for="senha">Senha</label><br />
-                <input
-                  type="password"
-                  id="senha"
-                  name="senha"
-                  required /><br /><br />
-                <input type="submit" value="Entrar" />
-              </div>
-            </form>
-          </div>
-          <div class="container text-center p-0 m-0">
-            <span
-              >Já tem uma conta? <a href="/login">Faça o login aqui</a></span>
-            <p class="container text-center p-0 m-0">
-              Todos os direitos reservados à SAGA.
-            </p>
-          </div>
-          <p th:text="${error}"></p>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+          <img src="/images/saga.png" alt="Saga Image" class="img-fluid mb-4" />
         </div>
       </div>
-      <div
-        class="col-md-8 bg-color d-flex align-items-center border border-dark">
-        <div class="container d-flex align-items-center justify-content-center">
-          <div class="col-md-6">
-            <h1 class="text-white" style="font-family: 'Rubik'">
-              Seja Bem Vindo!
-            </h1>
-            <p class="text-white">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Vestibulum non aliquet enim. Duis mattis convallis suscipit. Nulla
-              auctor commodo finibus. Ut nec pellentesque tellus. Praesent quis
-              laoreet eros.
-            </p>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header text-center">
+              <h2>CADASTRAR USUÁRIO</h2>
+            </div>
+            <div class="card-body">
+              <p>
+                Bem vindo ao Cadastro!<br />Por favor insira seus dados válidos.
+              </p>
+              <hr />
+              <form id="cadastroForm" action="/cadastro" method="post">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required />
+                </div>
+                <div class="mb-3">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nome"
+                    name="nome"
+                    required />
+                </div>
+                <div class="mb-3">
+                  <label for="senha" class="form-label">Senha</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="senha"
+                    name="senha"
+                    required />
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">
+                    Cadastrar
+                  </button>
+                  <p th:text="${error}"></p>
+                </div>
+                <div id="loadingIndicator" style="display: none">
+                  <i class="fas fa-spinner fa-spin"></i> Carregando...
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <span
+              >Já tem uma conta? <a href="/login">Faça o login aqui</a></span
+            >
+            <p>Todos os direitos reservados à SAGA.</p>
           </div>
         </div>
       </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      $(document).ready(function () {
+        $("#cadastroForm").on("submit", function (event) {
+          event.preventDefault();
+
+          var email = $("#email").val();
+          var nome = $("#nome").val();
+          var senha = $("#senha").val();
+
+          function mostrarIndicadorDeCarregamento() {
+            $("#loadingIndicator").show();
+          }
+
+          function esconderIndicadorDeCarregamento() {
+            $("#loadingIndicator").hide();
+          }
+
+          function validarCampos(email, nome, senha) {
+            if (!email.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Campo e-mail está vazio...",
+                text: "Por favor, preencha o campo de e-mail.",
+              });
+              return false;
+            }
+
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+              Swal.fire({
+                icon: "error",
+                title: "Caracteres não permitidos...",
+                text: "Por favor, insira um e-mail válido.",
+              });
+              return false;
+            }
+
+            if (!nome.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Preencha o Nome...",
+                text: "Por favor, preencha o campo de nome.",
+              });
+              return false;
+            }
+
+            if (!senha.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Senha Vazia...",
+                text: "Por favor, preencha o campo de senha.",
+              });
+              return false;
+            }
+
+            if (senha.length < 8) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "A senha deve ter pelo menos 8 caracteres.",
+              });
+              return false;
+            }
+
+            return true;
+          }
+
+          if (validarCampos(email, nome, senha)) {
+            mostrarIndicadorDeCarregamento();
+            $.ajax({
+              url: "/cadastro",
+              method: "GET",
+              data: { email: email },
+              success: function (response) {
+                esconderIndicadorDeCarregamento();
+                if (response.emailExists) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "E-mail já cadastrado...",
+                    text: "O e-mail informado já está cadastrado. Por favor, insira outro e-mail.",
+                  });
+                } else {
+                  fazerCadastro(email, nome, senha);
+                }
+              },
+              error: function (xhr, status, error) {
+                esconderIndicadorDeCarregamento();
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro",
+                  text: "Falha ao verificar o e-mail. Verifique sua conexão e tente novamente.",
+                });
+                console.error("Erro ao verificar e-mail:", xhr, status, error);
+              },
+            });
+
+            function fazerCadastro(email, nome, senha) {
+              $.ajax({
+                url: "/cadastro",
+                method: "POST",
+                data: { email: email, nome: nome, senha: senha },
+                success: function (response) {
+                  esconderIndicadorDeCarregamento();
+                  Swal.fire({
+                    icon: "success",
+                    title: "Você está cadastrado!",
+                    text: "Cadastro realizado com sucesso!\n\nRedirecionando para a página de login...",
+                    showConfirmButton: true,
+                  }).then(function () {
+                    window.location.href = "/login";
+                  });
+                },
+                error: function (xhr, status, error) {
+                  esconderIndicadorDeCarregamento();
+                  Swal.fire({
+                    icon: "error",
+                    title: "Erro",
+                    text:
+                      xhr.responseJSON?.error ||
+                      "Falha ao realizar cadastro. Verifique seus dados e tente novamente.",
+                  });
+                  console.error(
+                    "Erro ao realizar cadastro:",
+                    xhr,
+                    status,
+                    error
+                  );
+                },
+              });
+            }
+          }
+        });
+      });
+    </script>
   </body>
 </html>
