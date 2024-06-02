@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EmpresaController {
@@ -87,5 +88,16 @@ public class EmpresaController {
     public String excluirEmpresa(@PathVariable Long id) {
         empresaService.excluirEmpresa(id);
         return "redirect:/empresas/listar";
+    }
+
+    @GetMapping("/api/empresas/porte")
+    public ResponseEntity<Map<String, Long>> getEmpresasPorPorte() {
+        Map<String, Long> empresasPorPorte = empresaService.getEmpresasPorPorte();
+        return ResponseEntity.ok(empresasPorPorte);
+    }
+    @GetMapping("/api/empresas/setor")
+    public ResponseEntity<Map<String, Long>> getEmpresasPorSetor() {
+        Map<String, Long> empresasPorSetor = empresaService.getEmpresasPorSetor();
+        return ResponseEntity.ok(empresasPorSetor);
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service
@@ -111,5 +113,25 @@ public class EmpresaService {
         public CNPJJaCadastradoException(String message) {
             super(message);
         }
+    }
+    public Map<String, Long> getEmpresasPorPorte() {
+            List<Object[]> resultados = empresaRepository.countEmpresasByPorte();
+            Map<String, Long> empresasPorPorte = new HashMap<>();
+            for (Object[] resultado : resultados) {
+                String tituloPorte = (String) resultado[0];
+                Long quantidade = (Long) resultado[1];
+                empresasPorPorte.put(tituloPorte, quantidade);
+            }
+            return empresasPorPorte;
+    }
+    public Map<String, Long> getEmpresasPorSetor() {
+        List<Object[]> resultados = empresaRepository.countEmpresasBySetor();
+        Map<String, Long> empresasPorSetor = new HashMap<>();
+        for (Object[] resultado : resultados) {
+            String tituloSetor = (String) resultado[0];
+            Long quantidade = (Long) resultado[1];
+            empresasPorSetor.put(tituloSetor, quantidade);
+        }
+        return empresasPorSetor;
     }
 }
