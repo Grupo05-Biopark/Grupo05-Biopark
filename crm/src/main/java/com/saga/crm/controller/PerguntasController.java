@@ -12,14 +12,9 @@ import com.saga.crm.service.SetorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 
 @Controller
@@ -54,11 +49,28 @@ public class PerguntasController {
     }
 
     @PostMapping("/perguntas/adicionar")
-    public String adicionarPergunta(Perguntas pergunta) {
-        
+    public String adicionarPergunta(@RequestParam("descricao") String descricao,@RequestParam("titulo") String titulo,@RequestParam("eixo") Long eixoId,
+                                    @RequestParam("porte") Long porteId, @RequestParam("setor") String setorId) {
+
+        Perguntas pergunta = new Perguntas();
+        pergunta.setDescricao(descricao);
+        pergunta.setTitulo(titulo);
+        pergunta.setEixo(eixoService.getEixoById(eixoId));
+        pergunta.setPorte(porteService.getPorteById(porteId));
+
+        Setor setor = setorService.findSetorByTitulo(setorId);
+        if (setor == null) {
+            setor = new Setor();
+            setor.setTitulo(setorId);
+            setorService.save(setor);
+            pergunta.setSetor(setor);
+        }else {
+            pergunta.setSetor(setor);
+        }
+
         perguntasService.save(pergunta);
-        
-        return "redirect:/perguntas";
+
+        return "perguntas/index";
     }
 
     @GetMapping("/perguntas/editar/{id}")

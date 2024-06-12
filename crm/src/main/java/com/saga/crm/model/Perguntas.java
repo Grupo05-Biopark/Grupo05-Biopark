@@ -14,6 +14,8 @@ public class Perguntas {
     private String titulo;
     private String descricao;
 
+    private Integer importante = 0;
+
     @ManyToOne
     private Eixo eixo;
 
@@ -107,6 +109,14 @@ public class Perguntas {
 
     public void setChecklistPerguntas(Set<ChecklistPerguntas> checklistPerguntas) {
         this.checklistPerguntas = checklistPerguntas;
+    }
+
+    public Integer getImportante() {
+        return importante;
+    }
+
+    public void setImportante(Integer importante) {
+        this.importante = importante;
     }
 }
 
