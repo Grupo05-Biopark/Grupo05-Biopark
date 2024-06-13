@@ -104,7 +104,7 @@
                     <div class="col-lg-6">
                         <div class="card shadow p-3 mb-5 bg-white rounded">
                             <div class="card-body text-center ">
-                                <h5 class="card-title mb-4">Empresas por Porte</h5>
+                                <h5 class="card-title mb-4">Distribuição de Empresas por Porte</h5>
                                 <canvas id="empresasPorPorteChart" style="height: 300px;"></canvas>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                     <div class="col-lg-6">
                         <div class="card shadow p-3 mb-5 bg-white rounded">
                             <div class="card-body text-center">
-                                <h5 class="card-title mb-4">Empresas por Setor</h5>
+                                <h5 class="card-title mb-4">Distribuição de Empresas por Setor</h5>
                                 <canvas id="empresasPorSetorChart" style="height: 300px;"></canvas>
                             </div>
                         </div>
@@ -121,17 +121,17 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card shadow p-3 mb-5 bg-white rounded">
-                            <div class="card-body">
-                                <h5 class="card-title">Chart 3</h5>
-                                <canvas id="chart3" style="height: 300px;"></canvas>
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-4"><i class="fas fa-building"></i> Quantidade de Empresas</h5>
+                                <p id="quantidadeEmpresas" class="card-text" style="font-size: 2rem;"></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="card shadow p-3 mb-5 bg-white rounded">
-                            <div class="card-body">
-                                <h5 class="card-title">Chart 4</h5>
-                                <canvas id="chart4" style="height: 300px;"></canvas>
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-4"><i class="fas fa-tasks"></i> Quantidade de Checklists</h5>
+                                <p id="quantidadeChecklists" class="card-text" style="font-size: 2rem;"></p>
                             </div>
                         </div>
                     </div>
@@ -140,8 +140,8 @@
                     <div class="col-lg-12">
                         <div class="card shadow p-3 mb-5 bg-white rounded">
                             <div class="card-body">
-                                <h5 class="card-title">Chart 5</h5>
-                                <canvas id="chart5" style="height: 400px;"></canvas>
+                                <h5 class="card-title">Parecer de Empresas Cadastradas nos Últimos Meses</h5>
+                                <canvas id="parecerEmpresasChart" style="height: 400px;"></canvas>
                             </div>
                         </div>
                     </div>
@@ -156,8 +156,57 @@
 
 <script th:src="@{/js/script.js}"></script>
 <script>
+    // Dados fictícios para o parecer de empresas cadastradas nos últimos meses
+    var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    var empresasCadastradas = [10, 20, 25, 30, 40, 35, 45, 50, 55, 60, 65, 70]; // Altere os valores conforme necessário
+
+    // Criar o gráfico com Chart.js
+    var ctx = document.getElementById('parecerEmpresasChart').getContext('2d');
+    var parecerEmpresasChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Empresas Cadastradas',
+                data: empresasCadastradas,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script>
+    $(document).ready(function() {
+
+        var quantidadeChecklistsFake = 50;
+
+        $('#quantidadeChecklists').text(quantidadeChecklistsFake);
+    });
+
+</script>
+<script>
     $.ajax({
-        url: '/api/empresas/porte',
+        url: '/empresas/total',
+        type: 'GET',
+        success: function(totalempresas) {
+            $('#quantidadeEmpresas').text('Total de Empresas: ' + totalempresas);
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+        }
+    });
+</script>   <!--total empresas-->
+<script>
+    $.ajax({
+        url: '/empresas/porte',
         type: 'GET',
         success: function(response) {
             const dadosPorPorte = response;
@@ -170,18 +219,11 @@
                         label: 'Número de Empresas',
                         data: Object.values(dadosPorPorte),
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                        ],
-                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -208,7 +250,7 @@
 </script>   <!--gráfico de empresas por porte-->
 <script>
     $.ajax({
-        url: '/api/empresas/setor',
+        url: '/empresas/setor',
         type: 'GET',
         success: function(response) {
             const dadosPorSetor = response;
@@ -221,22 +263,13 @@
                         label: 'Número de Empresas',
                         data: Object.values(dadosPorSetor),
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 159, 64, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                        ],
-                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -261,9 +294,5 @@
         }
     });
 </script>   <!--gráfico de empresas por setor-->
-
-
-
-
 </body>
 </html>

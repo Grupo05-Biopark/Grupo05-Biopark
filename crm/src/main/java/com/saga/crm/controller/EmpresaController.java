@@ -90,14 +90,20 @@ public class EmpresaController {
         return "redirect:/empresas/listar";
     }
 
-    @GetMapping("/api/empresas/porte")
+    @GetMapping("/empresas/porte")
     public ResponseEntity<Map<String, Long>> getEmpresasPorPorte() {
         Map<String, Long> empresasPorPorte = empresaService.getEmpresasPorPorte();
         return ResponseEntity.ok(empresasPorPorte);
     }
-    @GetMapping("/api/empresas/setor")
+    @GetMapping("/empresas/setor")
     public ResponseEntity<Map<String, Long>> getEmpresasPorSetor() {
         Map<String, Long> empresasPorSetor = empresaService.getEmpresasPorSetor();
         return ResponseEntity.ok(empresasPorSetor);
     }
+    @GetMapping("/empresas/total")
+    public ResponseEntity<Long> getTotalEmpresas() {
+        long totalEmpresas = empresaService.getAllEmpresas().size();
+        return ResponseEntity.ok(totalEmpresas);
+    }
+
 }
