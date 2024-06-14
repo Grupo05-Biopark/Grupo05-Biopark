@@ -131,7 +131,7 @@
                         <div class="card shadow p-3 mb-5 bg-white rounded">
                             <div class="card-body text-center">
                                 <h5 class="card-title mb-4"><i class="fas fa-tasks"></i> Quantidade de Checklists</h5>
-                                <p id="quantidadeChecklists" class="card-text" style="font-size: 2rem;"></p>
+                                <p id="quantidadeChecklists" class="card-text" style="font-size: 2rem;">50</p>
                             </div>
                         </div>
                     </div>
@@ -140,8 +140,8 @@
                     <div class="col-lg-12">
                         <div class="card shadow p-3 mb-5 bg-white rounded">
                             <div class="card-body">
-                                <h5 class="card-title">Parecer de Empresas Cadastradas nos Últimos Meses</h5>
-                                <canvas id="parecerEmpresasChart" style="height: 400px;"></canvas>
+                                <h5 class="card-title mb-4">Empresas cadatradas nos ultimos meses</h5>
+                                <canvas id="empresasChart" style="height: auto;"></canvas>
                             </div>
                         </div>
                     </div>
@@ -155,40 +155,69 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
 
 <script th:src="@{/js/script.js}"></script>
-<script>
-    // Dados fictícios para o parecer de empresas cadastradas nos últimos meses
-    var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-    var empresasCadastradas = [10, 20, 25, 30, 40, 35, 45, 50, 55, 60, 65, 70]; // Altere os valores conforme necessário
 
-    // Criar o gráfico com Chart.js
-    var ctx = document.getElementById('parecerEmpresasChart').getContext('2d');
-    var parecerEmpresasChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: meses,
-            datasets: [{
-                label: 'Empresas Cadastradas',
-                data: empresasCadastradas,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+<script>
+
+    function obterNomeMes(numeroMes) {
+        const meses = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+        return meses[numeroMes - 1];
+    }
+
+    $.ajax({
+        url: '/empresas/mes',
+        type: 'GET',
+        success: function(response) {
+            if (response && Array.isArray(response) && response.length > 0) {
+                console.log('Dados recebidos:', response);
+
+                var meses = [];
+                var empresasCadastradas = [];
+
+
+                response.reverse().forEach(function(item) {
+                    var mes = obterNomeMes(item[1]);
+                    meses.push(mes);
+                    empresasCadastradas.push(item[2]);
+                });
+
+                console.log('Meses:', meses);
+                console.log('Empresas Cadastradas:', empresasCadastradas);
+
+
+                var ctx = document.getElementById('empresasChart').getContext('2d');
+                var empresasChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Empresas Cadastradas por Mês',
+                            data: empresasCadastradas,
+                            backgroundColor: 'rgb(2,98,234)',
+                            borderColor: 'rgb(0,54,89)',
+                            borderWidth: 1.5
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Os dados retornados não estão no formato esperado ou estão vazios.');
             }
+        },
+        error: function(xhr, status, error) {
+            console.error('Erro ao obter os dados das empresas:', error);
         }
-    });
-</script>
-<script>
-    $(document).ready(function() {
-
-        var quantidadeChecklistsFake = 50;
-
-        $('#quantidadeChecklists').text(quantidadeChecklistsFake);
     });
 
 </script>

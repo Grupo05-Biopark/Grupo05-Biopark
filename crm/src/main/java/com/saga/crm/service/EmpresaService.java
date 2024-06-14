@@ -134,4 +134,7 @@ public class EmpresaService {
         }
         return empresasPorSetor;
     }
+    public List<Object[]> countEmpresasByDataCadastro() {
+        return empresaRepository.countEmpresasByDataCadastro();
+    }
 }

@@ -13,4 +13,8 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
     @Query("SELECT e.setor.titulo, COUNT(e) FROM Empresa e GROUP BY e.setor.titulo")
     List<Object[]> countEmpresasBySetor();
+
+    @Query("SELECT YEAR(e.dataCadastro), MONTH(e.dataCadastro), COUNT(e) FROM Empresa e GROUP BY YEAR(e.dataCadastro), MONTH(e.dataCadastro)")
+    List<Object[]> countEmpresasByDataCadastro();
+
 }

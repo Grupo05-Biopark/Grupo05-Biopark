@@ -105,5 +105,9 @@ public class EmpresaController {
         long totalEmpresas = empresaService.getAllEmpresas().size();
         return ResponseEntity.ok(totalEmpresas);
     }
-
+    @GetMapping("/empresas/mes")
+    public ResponseEntity<List<Object[]>> getParecerEmpresasPorMes() {
+        List<Object[]> parecer = empresaService.countEmpresasByDataCadastro();
+        return ResponseEntity.ok(parecer);
+    }
 }
