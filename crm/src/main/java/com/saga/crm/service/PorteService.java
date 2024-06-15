@@ -1,6 +1,7 @@
 package com.saga.crm.service;
 
 import com.saga.crm.model.Porte;
+import com.saga.crm.model.Setor;
 import com.saga.crm.repositories.PorteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,4 +26,10 @@ public class PorteService {
         return porteRepository.findById(id).orElse(null);
     }
 
+    public Porte findPorteByTitulo(String titulo) {
+        return porteRepository.findPorteByTitulo(titulo);
+    }
+
+    public Porte save(Porte porte) {return porteRepository.save(porte);
+    }
 }

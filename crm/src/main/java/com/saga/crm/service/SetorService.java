@@ -21,14 +21,15 @@ public class SetorService {
         return setorRepository.findAll();
     }
 
-    public Setor save(Setor setor) {
-        return setorRepository.save(setor);
+    public Setor getSetorById(Long id) {
+        return setorRepository.findById(id).orElse(null);
     }
 
     public Setor findSetorByTitulo(String titulo) {
-        return setorRepository.findSetorByTitulo(titulo);
+        return setorRepository.findByTitulo(titulo);
     }
-    public Setor getSetorById(Long id) {
-        return setorRepository.findById(id).orElse(null);
+
+    public Setor save(Setor setor) {
+        return setorRepository.save(setor);
     }
 }
