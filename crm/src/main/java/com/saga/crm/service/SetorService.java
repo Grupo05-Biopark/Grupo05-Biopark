@@ -20,4 +20,15 @@ public class SetorService {
     public List<Setor> getAllSetores() {
         return setorRepository.findAll();
     }
+
+    public Setor save(Setor setor) {
+        return setorRepository.save(setor);
+    }
+
+    public Setor findSetorByTitulo(String titulo) {
+        return setorRepository.findSetorByTitulo(titulo);
+    }
+    public Setor getSetorById(Long id) {
+        return setorRepository.findById(id).orElse(null);
+    }
 }

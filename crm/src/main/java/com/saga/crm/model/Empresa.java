@@ -20,14 +20,10 @@ public class Empresa {
     private String cep;
     private String complemento;
 
-    // Adicionar associação com a classe Porte
     @ManyToOne
-    @JoinColumn(name = "porte_id")
     private Porte porte;
 
-    // Adicionar associação com a classe Setor
     @ManyToOne
-    @JoinColumn(name = "setor_id")
     private Setor setor;
 
     public Empresa() {

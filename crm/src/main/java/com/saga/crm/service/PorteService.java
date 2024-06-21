@@ -21,4 +21,8 @@ public class PorteService {
         return porteRepository.findAll();
     }
 
+    public Porte getPorteById(Long id) {
+        return porteRepository.findById(id).orElse(null);
+    }
+
 }

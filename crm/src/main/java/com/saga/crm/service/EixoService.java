@@ -20,4 +20,8 @@ public class EixoService {
     public List<Eixo> getAllEixos() {
         return eixoRepository.findAll();
     }
+
+    public Eixo getEixoById(Long id) {
+        return eixoRepository.findById(id).orElse(null);
+    }
 }
