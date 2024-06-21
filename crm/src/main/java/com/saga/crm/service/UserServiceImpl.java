@@ -71,4 +71,38 @@ public class UserServiceImpl implements UserService {
         role.setName("ROLE_ADMIN");
         return roleRepository.save(role);
     }
+
+    @Override
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.getRoles().clear();
+            userRepository.save(user);
+            userRepository.delete(user);
+        }
+    }
+
+    @Override
+    public void updateUserProfile(UserDto userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        if (user != null) {
+            user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+            user.setEmail(userDto.getEmail());
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void updatePassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(newPassword)); // Encriptar nova senha
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public boolean isPasswordMatches(User user, String currentPassword) {
+        return passwordEncoder.matches(currentPassword, user.getPassword());
+    }
 }
