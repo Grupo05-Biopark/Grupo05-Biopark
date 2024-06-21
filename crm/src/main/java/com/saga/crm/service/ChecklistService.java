@@ -43,4 +43,11 @@ public class ChecklistService {
         return checklistRepository.findByEixo(id);
     }
 
+    public List<Checklist> getChecklistByFormularioIdAndEixo(Long formularioId, Integer eixoId) {
+        return checklistRepository.findByFormularioIdAndEixo(formularioId, Long.valueOf(eixoId));
+    }
+
+    public List<Perguntas> getChecklistPerguntasById(Long checklistId) {
+        return checklistPerguntasRepository.findPerguntasByChecklistsId(checklistId);
+    }
 }

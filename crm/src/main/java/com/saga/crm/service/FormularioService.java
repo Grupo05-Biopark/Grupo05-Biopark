@@ -20,4 +20,8 @@ public class FormularioService {
     public List<Formulario> getAllFormulario() {
         return formularioRepository.findAll();
     }
+
+    public Formulario getFormularioById(Long id) {
+        return formularioRepository.findById(id).orElse(null);
+    }
 }

@@ -2,6 +2,7 @@ package com.saga.crm.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,6 +28,9 @@ public class Perguntas {
 
     @OneToMany(mappedBy = "perguntas")
     private Set<ChecklistPerguntas> checklistPerguntas;
+
+    @OneToMany(mappedBy = "pergunta")
+    private List<Respostas> respostas;
 
     public Perguntas(Long id, String titulo, String descricao, Eixo eixo, Porte porte, Setor setor, Set<ChecklistPerguntas> checklistPerguntas) {
         this.id = id;

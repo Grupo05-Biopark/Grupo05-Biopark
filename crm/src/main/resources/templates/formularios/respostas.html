@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checklists</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/select2.css}" rel="stylesheet">
+
+    <style>
+        .custom-radio input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            margin: 10px;
+            border-radius: 15%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            background-color: transparent;
+        }
+
+        .custom-radio input[type="radio"]:checked::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: #000000FF;
+            border-radius: 15%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .conforme input[type="radio"] {
+            background-color: #00FF00;
+        }
+
+        .medio input[type="radio"] {
+            background-color: #FFFF00;
+        }
+
+        .nao-conforme input[type="radio"] {
+            background-color: #FF0000;
+        }
+
+        .custom-radio label {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .custom-radio h5 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button data-mdb-button-init
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-collapse-init
+                    data-mdb-target="#sidebarMenu"
+                    aria-controls="sidebarMenu"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Right links -->
+            <ul class="navbar-nav ms-auto d-flex flex-row">
+                <!-- Avatar -->
+                <li class="nav-item dropdown">
+                    <a
+                            data-mdb-dropdown-init class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center"
+                            href="#"
+                            id="navbarDropdownMenuLink"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        <i class="fa-solid fa-circle-user fa-2xl"></i>
+                    </a>
+                    <ul
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdownMenuLink"
+                    >
+                        <li>
+                            <a class="dropdown-item" href="#">My profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Settings</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-3 mt-4">
+                <div class="row-imagem" >
+                    <img th:src="@{/images/saga.png}" alt="Saga Image" />
+                </div>
+                <div class="list-group" style="margin-top: 8%;">
+                    <div class="list-group-item list-group-item-action" style="color: inherit !important;text-decoration: none !important;" >
+                        <a href="/perguntas" style="border: 0px; color: inherit !important;text-decoration: none !important;" class="list-group">Perguntas</a>
+                    </div>
+                    <div class="list-group-item list-group-item-action dropdown-toggle" id="dropdownEmpresas">
+                        Empresas
+                        <div class="dropdown-menu" aria-labelledby="dropdownEmpresas">
+                            <a class="dropdown-item" href="/empresas">Adicionar</a>
+                            <a class="dropdown-item" href="/empresas/listar">Listar</a>
+                        </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action dropdown-toggle " id="dropdownChecklists">
+                        Checklists
+                        <div class="dropdown-menu" aria-labelledby="dropdownChecklists">
+                            <a class="dropdown-item" href="/checklists">Adicionar</a>
+                            <a class="dropdown-item" href="/checklists/listar">Listar</a>
+                        </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action dropdown-toggle sidebar-ativo" id="dropdownFormularios">
+                        Formulários
+                        <div class="dropdown-menu" aria-labelledby="dropdownFormularios">
+                            <a class="dropdown-item" href="/formulario">Adicionar</a>
+                            <a class="dropdown-item" href="/formulario/listar">Listar</a>
+                        </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action" style="color: inherit !important;text-decoration: none !important;" >
+                        <a href="/certificados/index" style="border: 0px; color: inherit !important;text-decoration: none !important;" class="list-group">Certificados</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <input type="text" name="idFormulario" id="idFormulario" th:value="${formulario.id}" hidden>
+    <input type="text" name="idEmpresa" id="idEmpresa" th:value="${empresaId}" hidden>
+    <input type="text" name="idFormularioChecklistGov" id="idFormularioChecklistGov" th:value="${formularioChecklistGovernanca}" hidden>
+    <input type="text" name="idFormularioChecklistAmb" id="idFormularioChecklistAmb" th:value="${formularioChecklistAmbiental}" hidden>
+    <input type="text" name="idFormularioChecklistSoc" id="idFormularioChecklistSoc" th:value="${formularioChecklistSocial}" hidden>
+    <div class="container pt-4" style="margin-bottom: 5%">
+        <div class="row">
+            <div class="col-md-9 col-sm-12" >
+                <div class="row text-center" >
+                    <h2 th:text="'Formulário ' + ${formulario.titulo}"></h2>
+                </div>
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-body" style="overflow-x: auto;">
+                                    <h4>Checklist Governança</h4>
+                                    <div id="accordion">
+                                        <div class="card" th:each="pergunta, iterStat : ${govPerguntas}">
+                                            <input th:id="'perguntaIdGov' + ${iterStat.index}" th:value="${pergunta.id}" hidden>
+                                            <input th:id="'perguntaImportanteGov' + ${iterStat.index}" th:value="${pergunta.importante}" hidden>
+                                            <div class="card-header" th:id="'headingGov' + ${iterStat.index}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                            th:data-target="'#collapseGov' + ${iterStat.index}"
+                                                            aria-expanded="true"
+                                                            th:aria-controls="'collapseGov' + ${iterStat.index}">
+                                                        <th:block th:text="${pergunta.titulo}"></th:block>
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div th:id="'collapseGov' + ${iterStat.index}" class="collapse"
+                                                 th:aria-labelledby="'headingGov' + ${iterStat.index}"
+                                                 data-parent="#accordion">
+                                                <div class="card-body d-flex justify-content-between">
+                                                    <div class="col-md-4 d-flex flex-column justify-content-start">
+                                                        <div class="d-flex align-items-center custom-radio conforme">
+                                                            <input type="radio" th:id="'conformidade1Gov' + ${iterStat.index}" th:name="'conformidadeGov' + ${iterStat.index}" value="1"/>
+                                                            <label th:for="'conformidade1Gov' + ${iterStat.index}"><h5>Conforme</h5></label>
+                                                        </div>
+                                                        <div class="d-flex align-items-center custom-radio medio">
+                                                            <input type="radio" th:id="'conformidade2Gov' + ${iterStat.index}" th:name="'conformidadeGov' + ${iterStat.index}" value="2"/>
+                                                            <label th:for="'conformidade2Gov' + ${iterStat.index}"><h5>Médio</h5></label>
+                                                        </div>
+                                                        <div class="d-flex align-items-center custom-radio nao-conforme">
+                                                            <input type="radio" th:id="'conformidade3Gov' + ${iterStat.index}" th:name="'conformidadeGov' + ${iterStat.index}" value="3"/>
+                                                            <label th:for="'conformidade3Gov' + ${iterStat.index}"><h5>Não Conforme</h5></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <textarea class="form-control" th:id="'observacaoGov' + ${iterStat.index}" th:name="'observacaoGov' + ${iterStat.index}" rows="5" placeholder="Observação"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h4 style="margin-top: 6%">Checklist Ambiental</h4>
+                                    <div id="accordionAmb">
+                                        <div class="card" th:each="pergunta, iterStat : ${ambPerguntas}">
+                                            <input th:id="'perguntaIdAmb' + ${iterStat.index}" th:value="${pergunta.id}" hidden>
+                                            <input th:id="'perguntaImportanteAmb' + ${iterStat.index}" th:value="${pergunta.importante}" hidden>
+                                            <div class="card-header" th:id="'headingAmb' + ${iterStat.index}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                            th:data-target="'#collapseAmb' + ${iterStat.index}"
+                                                            aria-expanded="true"
+                                                            th:aria-controls="'collapseAmb' + ${iterStat.index}">
+                                                        <th:block th:text="${pergunta.titulo}"></th:block>
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div th:id="'collapseAmb' + ${iterStat.index}" class="collapse"
+                                                 th:aria-labelledby="'headingAmb' + ${iterStat.index}"
+                                                 data-parent="#accordionAmb">
+                                                <div class="card-body d-flex justify-content-between">
+                                                    <div class="col-md-4 d-flex flex-column justify-content-start">
+                                                        <div class="d-flex align-items-center custom-radio conforme">
+                                                            <input type="radio" th:id="'conformidadeAmb' + ${iterStat.index}" th:name="'conformidadeAmb' + ${iterStat.index}" value="1"/>
+                                                            <label th:for="'conformidade1Amb' + ${iterStat.index}"><h5>Conforme</h5></label>
+                                                        </div>
+                                                        <div class="d-flex align-items-center custom-radio medio">
+                                                            <input type="radio" th:id="'conformidade2Amb' + ${iterStat.index}" th:name="'conformidadeAmb' + ${iterStat.index}" value="2"/>
+                                                            <label th:for="'conformidade2Amb' + ${iterStat.index}"><h5>Médio</h5></label>
+                                                        </div>
+                                                        <div class="d-flex align-items-center custom-radio nao-conforme">
+                                                            <input type="radio" th:id="'conformidade3Amb' + ${iterStat.index}" th:name="'conformidadeAmb' + ${iterStat.index}" value="3"/>
+                                                            <label th:for="'conformidade3Amb' + ${iterStat.index}"><h5>Não Conforme</h5></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <textarea class="form-control" th:id="'observacaoAmb' + ${iterStat.index}" th:name="'observacaoAmb' + ${iterStat.index}" rows="5" placeholder="Observação"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h4 style="margin-top: 6%">Checklist Social</h4>
+                                    <div id="accordionSoc">
+                                        <div class="card" th:each="pergunta, iterStat : ${socPerguntas}">
+                                            <input th:id="'perguntaIdSoc' + ${iterStat.index}" th:value="${pergunta.id}" hidden>
+                                            <input th:id="'perguntaImportanteSoc' + ${iterStat.index}" th:value="${pergunta.importante}" hidden>
+                                            <div class="card-header" th:id="'headingSoc' + ${iterStat.index}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                            th:data-target="'#collapseSoc' + ${iterStat.index}"
+                                                            aria-expanded="true"
+                                                            th:aria-controls="'collapseSoc' + ${iterStat.index}">
+                                                        <th:block th:text="${pergunta.titulo}"></th:block>
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div th:id="'collapseSoc' + ${iterStat.index}" class="collapse"
+                                                 th:aria-labelledby="'headingSoc' + ${iterStat.index}"
+                                                 data-parent="#accordionSoc">
+                                                <div class="card-body d-flex justify-content-between">
+                                                    <div class="col-md-4 d-flex flex-column justify-content-start">
+                                                        <div class="d-flex align-items-center custom-radio conforme">
+                                                            <input type="radio" th:id="'conformidadeSoc' + ${iterStat.index}" th:name="'conformidadeSoc' + ${iterStat.index}" value="1"/>
+                                                            <label th:for="'conformidade1Soc' + ${iterStat.index}"><h5>Conforme</h5></label>
+                                                        </div>
+                                                        <div class="d-flex align-items-center custom-radio medio">
+                                                            <input type="radio" th:id="'conformidade2Soc' + ${iterStat.index}" th:name="'conformidadeSoc' + ${iterStat.index}" value="2"/>
+                                                            <label th:for="'conformidade2Soc' + ${iterStat.index}"><h5>Médio</h5></label>
+                                                        </div>
+                                                        <div class="d-flex align-items-center custom-radio nao-conforme">
+                                                            <input type="radio" th:id="'conformidade3Soc' + ${iterStat.index}" th:name="'conformidadeSoc' + ${iterStat.index}" value="3"/>
+                                                            <label th:for="'conformidade3Soc' + ${iterStat.index}"><h5>Não Conforme</h5></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <textarea class="form-control" th:id="'observacaoSoc' + ${iterStat.index}" th:name="'observacaoSoc' + ${iterStat.index}" rows="5" placeholder="Observação"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6 d-flex flex-column justify-content-end p-4">
+                                    <button type="button" class="btn btn-primary" onclick="enviarRespostas()">Enviar Formulário</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/script.js}"></script>
+<script>
+    function coletarRespostas(){
+        var idsPerguntasGov = [];
+        var idsPerguntasAmb = [];
+        var idsPerguntasSoc = [];
+
+
+
+        var respostasGov = [];
+        var respostasAmb = [];
+        var respostasSoc = [];
+
+        var observacoesGov = [];
+        var observacoesAmb = [];
+        var observacoesSoc = [];
+
+        var respostasGeral = [];
+        var respostasGeralGov = [];
+        var respostasGeralAmb = [];
+        var respostasGeralSoc = [];
+
+        var inputsGov = document.querySelectorAll('input[name^="conformidadeGov"]:checked');
+        for (var i = 0; i < inputsGov.length; i++) {
+            console.log('Estou em ' + i + 'na pergunta id ' + document.getElementById('perguntaIdGov' + i).value)
+            var idPergunta = document.getElementById('perguntaIdGov' + i).value;
+            var observacaoGov = document.getElementById('observacaoGov' + i).value;
+
+
+            idsPerguntasGov.push(idPergunta);
+            respostasGov.push(inputsGov[i].value);
+            observacoesGov.push(observacaoGov);
+        }
+
+        var inputsAmb = document.querySelectorAll('input[name^="conformidadeAmb"]:checked');
+
+        for (var i = 0; i < inputsAmb.length; i++) {
+                var idPerguntaAmb = document.getElementById('perguntaIdAmb' + i).value;
+                var observacaoAmb = document.getElementById('observacaoAmb' + i).value;
+
+                idsPerguntasAmb.push(idPerguntaAmb);
+                respostasAmb.push(inputsAmb[i].value);
+                observacoesAmb.push(observacaoAmb);
+        }
+
+
+        var inputsSoc = document.querySelectorAll('input[name^="conformidadeSoc"]:checked');
+
+        for (var i = 0; i < inputsSoc.length; i++) {
+                var idPerguntaSoc = document.getElementById('perguntaIdSoc' + i).value;
+                var observacaoSoc = document.getElementById('observacaoSoc' + i).value;
+
+                idsPerguntasSoc.push(idPerguntaSoc);
+                respostasSoc.push(inputsSoc[i].value);
+                observacoesSoc.push(observacaoSoc);
+        }
+
+
+        for (var i = 0; i < idsPerguntasGov.length; i++) {
+            respostasGeralGov.push({
+                idPergunta: idsPerguntasGov[i],
+                conformidade: respostasGov[i],
+                observacao: observacoesGov[i]
+            });
+        }
+
+        for (var i = 0; i < idsPerguntasAmb.length; i++) {
+            respostasGeralAmb.push({
+                idPergunta: idsPerguntasAmb[i],
+                conformidade: respostasAmb[i],
+                observacao: observacoesAmb[i]
+            });
+        }
+
+        for (var i = 0; i < idsPerguntasSoc.length; i++) {
+            respostasGeralSoc.push({
+                idPergunta: idsPerguntasSoc[i],
+                conformidade: respostasSoc[i],
+                observacao: observacoesSoc[i]
+            });
+        }
+
+        respostasGeral.push({
+            respostasGov: respostasGeralGov,
+            idFormularioChecklistGov: document.getElementById('idFormularioChecklistGov').value
+        });
+
+        respostasGeral.push({
+            respostasAmb: respostasGeralAmb,
+            idFormularioChecklistAmb: document.getElementById('idFormularioChecklistAmb').value
+        });
+
+        respostasGeral.push({
+            respostasSoc: respostasGeralSoc,
+            idFormularioChecklistSoc: document.getElementById('idFormularioChecklistSoc').value
+        });
+
+        console.log(respostasGeral);
+        return respostasGeral
+    }
+
+
+    // Função para enviar as respostas para o controller
+    function enviarRespostas() {
+        var respostasGeral = coletarRespostas();
+        console.log(respostasGeral);
+        var empresaId = document.getElementById('idEmpresa').value;
+        var formularioId = document.getElementById('idFormulario').value;
+
+
+        var dataToSend = {
+            respostas: respostasGeral,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/formulario/' + formularioId + '/iniciar/respostas/' + empresaId + '/salvar',
+            data: JSON.stringify(dataToSend),
+            contentType: 'application/json',
+            success: function (data) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Respostas enviadas com sucesso!',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then((result) => {
+                    window.location.href = '/formulario/listar';
+                });
+            },
+            error: function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro ao enviar respostas!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    }
+
+
+
+</script>
+</body>
+</html>
+
