@@ -1,77 +1,183 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" lang="PT-BR">
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    />
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <link
-            href="https://fonts.googleapis.com/css?family=Rubik"
-            rel="stylesheet"
-    />
+      href="https://fonts.googleapis.com/css?family=Rubik"
+      rel="stylesheet" />
     <link
-            href="https://fonts.googleapis.com/css?family=Rufina"
-            rel="stylesheet"
-    />
+      href="https://fonts.googleapis.com/css?family=Rufina"
+      rel="stylesheet" />
     <link th:href="@{/css/login.css}" rel="stylesheet" />
-</head>
-<body>
-<div class="row">
-    <div class="col-md-4">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-4">
         <div class="row">
-            <div class="col-md-4 mt-2" style="margin-left: 2%;">
-                <img th:src="@{/images/saga.png}" alt="Saga Image" />
+          <div class="container mt-5">
+            <div class="row justify-content-center">
+              <div class="col-6 row justify-content-center">
+                <img
+                  th:src="@{/images/saga.png}"
+                  alt="Saga Image"
+                  style="max-width: 50%; height: auto" />
+              </div>
             </div>
-            <div class="col-md-4"></div>
+          </div>
+          <div class="col-md-4"></div>
         </div>
-        <div class="row" style="margin-top: 30%">
-            <div class="container text-left w-75">
-                <h2>ENTRAR</h2>
-                <p>Bem vindo de volta! Por favor insira seus dados de login</p>
-            </div>
-            <div class="container">
-                <form action="/login" method="post">
-                    <div class="container w-75 p-0">
-                        <label for="email">Email</label><br />
-                        <input type="email" id="email" name="email" required /><br />
-                        <label for="senha">Senha</label><br />
-                        <input
-                                type="password"
-                                id="senha"
-                                name="senha"
-                                required
-                        /><br /><br />
-                        <input type="submit" value="Entrar"/>
-                    </div>
-                </form>
-            </div>
-            <div class="container text-center p-0 m-0">
-                <span>Não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></span>
-            </div>
-            <p th:text="${error}"></p>
+        <div class="row" style="margin-top: 10%">
+          <div class="container text-left w-75">
+            <h2 class="text-center">ENTRAR</h2>
+            <p>Bem vindo! <br />Por favor insira seus dados de Login.</p>
+            <hr />
+          </div>
+          <div class="container">
+            <form id="loginForm">
+              <div class="container w-75 p-0">
+                <label for="email">Email</label><br />
+                <input type="email" id="email" name="email" required /><br />
+                <label for="senha">Senha</label><br />
+                <input type="password" id="senha" name="senha" required />
+                <br /><br />
+                <input type="submit" value="Entrar" />
+                <p th:text="${error}"></p>
+                <div id="loadingIndicator" style="display: none">
+                  <i class="fas fa-spinner fa-spin"></i> Carregando...
+                </div>
+                <div class="d-flex justify-content-end">
+                  <a th:href="@{/esqueci-senha}" class="text-end"
+                    >Esqueceu a senha?</a
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+          <p></p>
+          <hr />
+          <div class="container text-center p-0 m-0">
+            <span
+              >Não tem uma conta?
+              <a th:href="@{/cadastro}">Cadastre-se aqui.</a></span
+            >
+            <p class="container text-center p-0 m-0">
+              Todos os direitos reservados à SAGA.
+            </p>
+          </div>
         </div>
-    </div>
-    <div
-            class="col-md-8 bg-color d-flex align-items-center border border-dark"
-    >
+      </div>
+      <div
+        class="col-md-8 bg-color d-flex align-items-center border border-dark">
         <div class="container d-flex align-items-center justify-content-center">
-            <div class="col-md-6">
-                <h1 class="text-white" style="font-family: 'Rubik'">
-                    Seja Bem Vindo!
-                </h1>
-                <p class="text-white">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vestibulum non aliquet enim. Duis mattis convallis suscipit. Nulla
-                    auctor commodo finibus. Ut nec pellentesque tellus. Praesent quis
-                    laoreet eros.
-                </p>
-            </div>
+          <div class="col-md-6">
+            <h1 class="text-white" style="font-family: 'Rubik'">
+              Seja Bem Vindo!
+            </h1>
+            <p class="text-white">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Vestibulum non aliquet enim. Duis mattis convallis suscipit. Nulla
+              auctor commodo finibus. Ut nec pellentesque tellus. Praesent quis
+              laoreet eros.
+            </p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#loginForm").on("submit", function (event) {
+          event.preventDefault();
+
+          var email = $("#email").val();
+          var senha = $("#senha").val();
+
+          function mostrarIndicadorDeCarregamento() {
+            $("#loadingIndicator").show();
+          }
+
+          function esconderIndicadorDeCarregamento() {
+            $("#loadingIndicator").hide();
+          }
+          function validarCampos(email, senha) {
+            if (!email.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Campo e-mail esta vazio...",
+                text: "Por favor, preencha o campo de e-mail.",
+              });
+              return false;
+            }
+
+            if (!senha.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Campo senha esta vazio...",
+                text: "Por favor, preencha o campo de senha.",
+              });
+              return false;
+            }
+
+            if (senha.length < 8) {
+              Swal.fire({
+                icon: "error",
+                title: "Senha não atende aos requisitos mínimos.",
+                text: "A senha deve ter pelo menos 8 caracteres.",
+              });
+              return false;
+            }
+            return true;
+          }
+
+          if (validarCampos(email, senha)) {
+            mostrarIndicadorDeCarregamento();
+
+            $.ajax({
+              url: "/login",
+              method: "POST",
+              data: {
+                email: email,
+                senha: senha,
+              },
+              success: function (response) {
+                esconderIndicadorDeCarregamento();
+                Swal.fire({
+                  icon: "success",
+                  title: "Sucesso",
+                  text: "Login realizado com sucesso!",
+                  showConfirmButton: false,
+                  timer: 2000,
+                }).then(function () {
+                  window.location.href = "/dashboard";
+                });
+              },
+              error: function (xhr, status, error) {
+                esconderIndicadorDeCarregamento();
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro",
+                  text:
+                    xhr.responseJSON.error ||
+                    "Falha ao realizar login. Verifique suas credenciais e tente novamente.",
+                });
+              },
+            });
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
