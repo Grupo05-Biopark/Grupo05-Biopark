@@ -10,6 +10,23 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link th:href="@{/css/select2.css}" rel="stylesheet">
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <style>
+        .dropdown-menu {
+            margin-left: 0;
+            left: auto;
+            right: 0px;
+        }
+
+        .dropdown-item {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+
+        .list-group-item.dropdown-toggle::after {
+            float: right;
+            margin-top: 0.4em;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,13 +66,10 @@
                             aria-labelledby="navbarDropdownMenuLink"
                     >
                         <li>
-                            <a class="dropdown-item" href="#">My profile</a>
+                            <a class="dropdown-item" href="#">Meu perfil</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Settings</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <a class="dropdown-item" th:href="@{/logout}">Sair</a>
                         </li>
                     </ul>
                 </li>
@@ -181,8 +195,8 @@
                                         <td class="align-middle" th:text="${pergunta.eixo.titulo}"></td>
                                         <td class="align-middle" th:text="${pergunta.setor.titulo}"></td>
                                         <td class="align-middle" th:text="${pergunta.porte.titulo}"></td>
-                                        <td class="d-flex">
-                                            <a th:href="@{/perguntas/editar/{id}(id=${pergunta.id})}" class="btn btn-primary m-1" style="background-color: #2471ee">Editar</a>
+                                        <td class="text-center align-middle">
+                                            <a class="btn btn-primary m-1" th:href="@{'/perguntas/editar/' + ${pergunta.id}}">Editar</a>
                                             <a class="btn btn-danger excluir-pergunta m-1"  th:onclick="'excluirPergunta(\'' + ${pergunta.id} + '\');'">Excluir</a>
                                         </td>
                                     </tr>
@@ -227,8 +241,75 @@
             }
         });
 
-        $('#eixo').select2({placeholder: 'Selecione um eixo',});
-        $('#porte').select2({placeholder: 'Selecione um porte',});
+        $('#eixo').select2({
+        placeholder: 'Selecione um eixo',tags: true,
+            createTag: function (params) {
+                return {
+                    id: params.term,
+                    text: params.term,
+                    newOption: true
+                };
+            },
+            templateResult: function (data) {
+                var $result = $("<span></span>");
+
+                $result.text(data.text);
+
+                if (data.newOption) {
+                    $result.append(" <em>(Novo)</em>");
+                    $result.html($('<strong>', { html: $result.html() }));
+                }
+
+                return $result;
+            },
+            insertTag: function (data, tag) {
+                // Insira a nova tag ao final dos resultados
+                data.push(tag);
+            }
+        });
+        $('#porte').select2({
+        placeholder: 'Selecione um porte',
+        tags: true,
+            createTag: function (params) {
+                return {
+                    id: params.term,
+                    text: params.term,
+                    newOption: true
+                };
+            },
+            templateResult: function (data) {
+                var $result = $("<span></span>");
+
+                $result.text(data.text);
+
+                if (data.newOption) {
+                    $result.append(" <em>(Novo)</em>");
+                    $result.html($('<strong>', { html: $result.html() }));
+                }
+
+                return $result;
+            },
+            insertTag: function (data, tag) {
+                // Insira a nova tag ao final dos resultados
+                data.push(tag);
+            }
+        });
+
+        // Dropdown toggle logic
+        $('.dropdown-toggle').on('click', function (e) {
+            var $el = $(this).next('.dropdown-menu');
+            var isVisible = $el.is(':visible');
+            $('.dropdown-menu').not($el).hide();
+            $el.toggle(!isVisible);
+            return false;
+        });
+
+        // Hide dropdowns when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.dropdown-toggle').length) {
+                $('.dropdown-menu').hide();
+            }
+        });
 
     });
 

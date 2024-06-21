@@ -27,30 +27,52 @@
             </div>
             <div class="col-md-4"></div>
         </div>
+
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">E-mail ou senha inválidos</div>
+        </div>
         <div class="row" style="margin-top: 30%">
             <div class="container text-left w-75">
                 <h2>ENTRAR</h2>
                 <p>Bem vindo de volta! Por favor insira seus dados de login</p>
             </div>
             <div class="container">
-                <form action="/login" method="post">
-                    <div class="container w-75 p-0">
-                        <label for="email">Email</label><br />
-                        <input type="email" id="email" name="email" required /><br />
-                        <label for="senha">Senha</label><br />
+                <form
+                        method="post"
+                        role="form"
+                        th:action="@{/login}"
+                        class="form-horizontal"
+                >
+                    <div class="form-group mb-3">
+                        <label class="control-label"> Email</label>
+                        <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                                placeholder="Informe seu email"
+                        />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="control-label"> Password</label>
                         <input
                                 type="password"
-                                id="senha"
-                                name="senha"
-                                required
-                        /><br /><br />
-                        <input type="submit" value="Entrar"/>
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Insira sua senha"
+                        />
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-primary" >Entrar</button>
+                        <span> Não tem uma conta?
+                                <a th:href="@{/cadastro}">Cadastre-se aqui</a>
+                            </span>
                     </div>
                 </form>
             </div>
-            <div class="container text-center p-0 m-0">
-                <span>Não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></span>
-            </div>
+
             <p th:text="${error}"></p>
         </div>
     </div>
