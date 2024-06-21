@@ -68,9 +68,9 @@ function toggleDropdownFormularios() {
     }
 }
 
-function toggleDropdownUsuarios() {
+function toggleDropdownUser() {
     closeAllDropdowns();
-    var dropdownMenu = document.getElementById('dropdownUsuarios').querySelector('.dropdown-menu');
+    var dropdownMenu = document.getElementById('dropdownUser').querySelector('.dropdown-menu');
     if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
         dropdownMenu.style.display = 'block';
     }
@@ -80,4 +80,4 @@ function toggleDropdownUsuarios() {
 document.getElementById('dropdownEmpresas').addEventListener('click', toggleDropdownEmpresas);
 document.getElementById('dropdownChecklists').addEventListener('click', toggleDropdownChecklists);
 document.getElementById('dropdownFormularios').addEventListener('click', toggleDropdownFormularios);
-document.getElementById('dropdownUsuarios').addEventListener('click', toggleDropdownUsuarios);
+document.getElementById('dropdownUser').addEventListener('click', toggleDropdownUser);

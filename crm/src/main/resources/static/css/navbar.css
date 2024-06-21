@@ -73,4 +73,9 @@ body{
         height: 7% !important;
     }
 }
-
+.user-menu {
+    position: absolute;
+    transform: translateX(-60%);
+    left: 0;
+    top: 100%;
+}
