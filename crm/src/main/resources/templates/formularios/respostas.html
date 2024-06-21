@@ -32,7 +32,7 @@
             content: '';
             width: 10px;
             height: 10px;
-            background-color: rgba(114, 73, 73, 0.5);
+            background-color: #000000FF;
             border-radius: 15%;
             position: absolute;
             top: 50%;
@@ -142,6 +142,9 @@
                             <a class="dropdown-item" href="/formulario">Adicionar</a>
                             <a class="dropdown-item" href="/formulario/listar">Listar</a>
                         </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action" style="color: inherit !important;text-decoration: none !important;" >
+                        <a href="/certificados/index" style="border: 0px; color: inherit !important;text-decoration: none !important;" class="list-group">Certificados</a>
                     </div>
                 </div>
             </div>
@@ -304,44 +307,46 @@
 <script th:src="@{/js/script.js}"></script>
 <script>
     function coletarRespostas(){
-        var idsPerguntas = [];
-        var formularioChecklistIds = [];
-        var observacoes = [];
-        var respostas = [];
-        var importantes = [];
+        var idsPerguntasGov = [];
+        var idsPerguntasAmb = [];
+        var idsPerguntasSoc = [];
+
+
+
+        var respostasGov = [];
+        var respostasAmb = [];
+        var respostasSoc = [];
+
+        var observacoesGov = [];
+        var observacoesAmb = [];
+        var observacoesSoc = [];
 
         var respostasGeral = [];
+        var respostasGeralGov = [];
+        var respostasGeralAmb = [];
+        var respostasGeralSoc = [];
 
         var inputsGov = document.querySelectorAll('input[name^="conformidadeGov"]:checked');
         for (var i = 0; i < inputsGov.length; i++) {
-                console.log('Estou em ' + i + 'na pergunta id ' + document.getElementById('perguntaIdGov' + i).value)
-                var idPergunta = document.getElementById('perguntaIdGov' + i).value;
-                var formularioChecklistId = document.getElementById('idFormularioChecklistGov').value;
-                // var observacao = document.getElementById('observacaoGov' + index).value ? document.getElementById('observacaoGov' + index).value : "";
-                var importante = document.getElementById('perguntaImportanteGov' + i).value;
+            console.log('Estou em ' + i + 'na pergunta id ' + document.getElementById('perguntaIdGov' + i).value)
+            var idPergunta = document.getElementById('perguntaIdGov' + i).value;
+            var observacaoGov = document.getElementById('observacaoGov' + i).value;
 
 
-                idsPerguntas.push(idPergunta);
-                respostas.push(inputsGov[i].value);
-                formularioChecklistIds.push(formularioChecklistId);
-                // observacoes.push(observacao);
-                importantes.push(importante);
+            idsPerguntasGov.push(idPergunta);
+            respostasGov.push(inputsGov[i].value);
+            observacoesGov.push(observacaoGov);
         }
 
         var inputsAmb = document.querySelectorAll('input[name^="conformidadeAmb"]:checked');
 
         for (var i = 0; i < inputsAmb.length; i++) {
-                var idPerguntaAmb = document.getElementById('perguntaIdGov' + i).value;
-                var formularioChecklistIdAmb = document.getElementById('idFormularioChecklistAmb').value;
-                // var observacaoAmb = document.getElementById('observacaoAmb' + i).value ? document.getElementById('observacaoAmb' + i).value : "";
-                var importanteAmb = document.getElementById('perguntaImportanteAmb' + i).value;
+                var idPerguntaAmb = document.getElementById('perguntaIdAmb' + i).value;
+                var observacaoAmb = document.getElementById('observacaoAmb' + i).value;
 
-                idsPerguntas.push(idPerguntaAmb);
-                respostas.push(inputsAmb[i].value);
-                formularioChecklistIds.push(formularioChecklistIdAmb);
-                // observacoes.push(observacaoAmb);
-                importantes.push(importanteAmb);
-
+                idsPerguntasAmb.push(idPerguntaAmb);
+                respostasAmb.push(inputsAmb[i].value);
+                observacoesAmb.push(observacaoAmb);
         }
 
 
@@ -349,27 +354,54 @@
 
         for (var i = 0; i < inputsSoc.length; i++) {
                 var idPerguntaSoc = document.getElementById('perguntaIdSoc' + i).value;
-                var formularioChecklistIdSoc = document.getElementById('idFormularioChecklistSoc').value;
-                // var observacaoSoc = document.getElementById('observacaoSoc' + i).value ? document.getElementById('observacaoSocial' + i).value : "";
-                var importanteSoc = document.getElementById('perguntaImportanteSoc' + i).value;
+                var observacaoSoc = document.getElementById('observacaoSoc' + i).value;
 
-                idsPerguntas.push(idPerguntaSoc);
-                respostas.push(inputsSoc[i].value);
-                formularioChecklistIds.push(formularioChecklistIdSoc);
-                // observacoes.push(observacaoSoc);
-                importantes.push(importanteSoc);
+                idsPerguntasSoc.push(idPerguntaSoc);
+                respostasSoc.push(inputsSoc[i].value);
+                observacoesSoc.push(observacaoSoc);
         }
 
-        console.log("Ids Perguntas: " + idsPerguntas);
-        console.log("Respostas: " + respostas);
-        // console.log("Observações: " + observacoes);
-        console.log("Importantes: " + importantes);
 
-        respostasGeral.push(idsPerguntas);
-        respostasGeral.push(respostas);
-        // respostasGeral.push(observacoes);
-        respostasGeral.push(importantes);
+        for (var i = 0; i < idsPerguntasGov.length; i++) {
+            respostasGeralGov.push({
+                idPergunta: idsPerguntasGov[i],
+                conformidade: respostasGov[i],
+                observacao: observacoesGov[i]
+            });
+        }
 
+        for (var i = 0; i < idsPerguntasAmb.length; i++) {
+            respostasGeralAmb.push({
+                idPergunta: idsPerguntasAmb[i],
+                conformidade: respostasAmb[i],
+                observacao: observacoesAmb[i]
+            });
+        }
+
+        for (var i = 0; i < idsPerguntasSoc.length; i++) {
+            respostasGeralSoc.push({
+                idPergunta: idsPerguntasSoc[i],
+                conformidade: respostasSoc[i],
+                observacao: observacoesSoc[i]
+            });
+        }
+
+        respostasGeral.push({
+            respostasGov: respostasGeralGov,
+            idFormularioChecklistGov: document.getElementById('idFormularioChecklistGov').value
+        });
+
+        respostasGeral.push({
+            respostasAmb: respostasGeralAmb,
+            idFormularioChecklistAmb: document.getElementById('idFormularioChecklistAmb').value
+        });
+
+        respostasGeral.push({
+            respostasSoc: respostasGeralSoc,
+            idFormularioChecklistSoc: document.getElementById('idFormularioChecklistSoc').value
+        });
+
+        console.log(respostasGeral);
         return respostasGeral
     }
 
@@ -380,11 +412,17 @@
         console.log(respostasGeral);
         var empresaId = document.getElementById('idEmpresa').value;
         var formularioId = document.getElementById('idFormulario').value;
-        console.log(respostasGeral);
+
+
+        var dataToSend = {
+            respostas: respostasGeral,
+        };
+
         $.ajax({
             type: 'POST',
             url: '/formulario/' + formularioId + '/iniciar/respostas/' + empresaId + '/salvar',
-            data: JSON.stringify(respostasGeral),
+            data: JSON.stringify(dataToSend),
+            contentType: 'application/json',
             success: function (data) {
                 Swal.fire({
                     icon: 'success',

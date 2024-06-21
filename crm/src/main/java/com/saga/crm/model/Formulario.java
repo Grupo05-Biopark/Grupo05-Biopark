@@ -17,6 +17,11 @@ public class Formulario {
     @OneToMany(mappedBy = "formulario")
     private Set<FormularioChecklist> formularioChecklists;
 
+    @OneToMany(mappedBy = "formulario")
+    private Set<Certificados> certificados;
+
+
+
     public Formulario(Long id, String titulo, String descricao, Set<FormularioChecklist> formularioChecklists) {
         this.id = id;
         this.titulo = titulo;

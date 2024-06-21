@@ -23,4 +23,8 @@ public class FormularioChecklistService {
     public FormularioChecklist findByFormularioAndChecklist(Long formularioId, Long checklistId) {
         return formularioChecklistRepository.findByFormularioIdAndChecklistId(formularioId, checklistId);
     }
+
+    public FormularioChecklist getFormularioChecklistById(Long id) {
+        return formularioChecklistRepository.findById(id).orElse(null);
+    }
 }
