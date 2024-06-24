@@ -115,29 +115,6 @@
           }, 2000); // 2000 milissegundos = 2 segundos
       }
 
-    // Verifique a URL quando a página é carregada
-    if (window.location.href.indexOf('error') > -1) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'E-mail ou senha inválidos'
-      });
-    }
-
-    $('#formLogin').on('submit', function(event) {
-      var username = $('#username').val();
-      var password = $('#password').val();
-
-      if (!username || !password) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Por favor, preencha todos os campos'
-        });
-        event.preventDefault();
-      }
-    });
-
   })
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
