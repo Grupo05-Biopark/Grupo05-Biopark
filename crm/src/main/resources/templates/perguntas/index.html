@@ -128,7 +128,7 @@
                             <div class="form-group">
                                 <h5 for="eixo">Eixo</h5>
                                 <select class="eixo" id="eixo" name="eixo" >
-                                    <option th:each="eixo : ${eixos}" th:value="${eixo.id}" name="" th:text="${eixo.titulo}"></option>
+                                    <option th:each="eixo : ${eixos}" th:value="${eixo.titulo}" name="" th:text="${eixo.titulo}"></option>
                                 </select>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                             <div class="form-group">
                                 <h5 for="setor">Setor</h5>
                                 <select class="setor" id="setor" name="setor">
-                                    <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.titulo}"></option>
+                                    <option th:each="setor : ${setores}" th:value="${setor.titulo}" th:text="${setor.titulo}"></option>
                                 </select>
                             </div>
                         </div>
@@ -144,18 +144,12 @@
                             <div class="form-group">
                                 <h5 for="porte">Porte</h5>
                                 <select class="porte" id="porte" name="porte">
-                                    <option th:each="porte : ${portes}" th:value="${porte.id}" th:text="${porte.titulo}"></option>
+                                    <option th:each="porte : ${portes}" th:value="${porte.titulo}" th:text="${porte.titulo}"></option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-2 d-flex align-items-center" style="margin-top: 3%">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="check1" name="importante" value="1">
-                                <h5>Importante?</h5>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group text-center " style="margin-top: 10%">
+                        <div class="col-lg-6">
+                            <div class="form-group text-center " style="margin-top:8%">
                                 <button type="submit" class="btn btn-primary btn-lg" style="width: 70%; background-color: #2471ee">Salvar</button>
                             </div>
                         </div>
@@ -229,59 +223,8 @@
             }
         });
 
-        $('#eixo').select2({
-        placeholder: 'Selecione um eixo',tags: true,
-            createTag: function (params) {
-                return {
-                    id: params.term,
-                    text: params.term,
-                    newOption: true
-                };
-            },
-            templateResult: function (data) {
-                var $result = $("<span></span>");
-
-                $result.text(data.text);
-
-                if (data.newOption) {
-                    $result.append(" <em>(Novo)</em>");
-                    $result.html($('<strong>', { html: $result.html() }));
-                }
-
-                return $result;
-            },
-            insertTag: function (data, tag) {
-                // Insira a nova tag ao final dos resultados
-                data.push(tag);
-            }
-        });
-        $('#porte').select2({
-        placeholder: 'Selecione um porte',
-        tags: true,
-            createTag: function (params) {
-                return {
-                    id: params.term,
-                    text: params.term,
-                    newOption: true
-                };
-            },
-            templateResult: function (data) {
-                var $result = $("<span></span>");
-
-                $result.text(data.text);
-
-                if (data.newOption) {
-                    $result.append(" <em>(Novo)</em>");
-                    $result.html($('<strong>', { html: $result.html() }));
-                }
-
-                return $result;
-            },
-            insertTag: function (data, tag) {
-                // Insira a nova tag ao final dos resultados
-                data.push(tag);
-            }
-        });
+        $('#porte').select2();
+        $('#eixo').select2();
 
     });
 
