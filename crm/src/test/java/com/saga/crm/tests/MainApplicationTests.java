@@ -1,12 +1,14 @@
 package com.saga.crm.tests;
 
-import com.saga.crm.model.Eixo;
-import com.saga.crm.model.Perguntas;
-import com.saga.crm.model.Porte;
+import com.saga.crm.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.saga.crm.model.Setor;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.text.Normalizer;
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 public class MainApplicationTests {
@@ -59,6 +61,60 @@ public class MainApplicationTests {
         assert pergunta.getEixo().equals(eixo);
         assert pergunta.getPorte().equals(porte);
         assert pergunta.getSetor().equals(setor);
+
+
+    }
+
+    @Test
+    public void testExcluirPergunta() {
+        // cenário
+        Long idPergunta = 10L;
+
+        // ação
+        perguntasTestService.excluirPergunta(idPergunta);
+
+        // verificação
+        Perguntas pergunta = perguntasTestService.getPerguntaById(idPergunta);
+        assertNull(pergunta, "A pergunta deve ser nula após a exclusão");
+    }
+
+    @Test
+    public void adicionarCertificado(){
+        //cenario
+        long idFormulario = 10L;
+        String descricaoFormulario = "descricao";
+        String tituloFormulario = "titulo";
+
+        long idCertificado = 12L;
+        Boolean aprovado = true;
+        Date data = new Date();
+        long notaGov = 1L;
+        long notaAmb = 1L;
+        long notaSoc = 1L;
+
+        //acao
+        Formulario formulario = new Formulario();
+        formulario.setId(idFormulario);
+        formulario.setDescricao(descricaoFormulario);
+        formulario.setTitulo(tituloFormulario);
+
+        Certificados certificado = new Certificados();
+        certificado.setId(idCertificado);
+        certificado.setAprovado(aprovado);
+        certificado.setData(data);
+        certificado.setNota_gov(notaGov);
+        certificado.setNota_amb(notaAmb);
+        certificado.setNota_soc(notaSoc);
+        certificado.setFormulario(formulario);
+
+        //verificacao
+        assert certificado.getId().equals(12L);
+        assert certificado.isAprovado();
+        assert certificado.getData().equals(data);
+        assert certificado.getNota_gov().equals(notaGov);
+        assert certificado.getNota_amb().equals(notaAmb);
+        assert certificado.getNota_soc().equals(notaSoc);
+        assert certificado.getFormulario().equals(formulario);
 
 
     }
