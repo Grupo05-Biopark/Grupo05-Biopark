@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDate; // Importe a classe LocalDate
 
 @Entity
 public class Empresa {
@@ -19,15 +20,12 @@ public class Empresa {
     private String numero;
     private String cep;
     private String complemento;
+    private LocalDate dataCadastro;
 
-    // Adicionar associação com a classe Porte
     @ManyToOne
-    @JoinColumn(name = "porte_id")
     private Porte porte;
 
-    // Adicionar associação com a classe Setor
     @ManyToOne
-    @JoinColumn(name = "setor_id")
     private Setor setor;
 
     public Empresa() {
@@ -124,5 +122,13 @@ public class Empresa {
 
     public void setSetor(Setor setor) {
         this.setor = setor;
+    }
+
+    public LocalDate getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDate dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 }

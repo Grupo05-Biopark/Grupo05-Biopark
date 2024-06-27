@@ -51,3 +51,7 @@ input[type="submit"] {
 input[type="submit"]:hover {
     transform: scale(1.02);
 }
+form{
+    width: 60%;
+    margin-left: 13%;
+}

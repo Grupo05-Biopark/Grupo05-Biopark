@@ -2,49 +2,80 @@ body{
     background-color: #bbc7d3;
 }
 
-.content {
-    padding: 20px;
+@media (min-width: 991.98px) {
+    main {
+        padding-left: 240px;
+    }
 }
 
+/* Sidebar */
 .sidebar {
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
-    height: 100%;
-    width: 250px;
-    background-color: #b1d8ff;
-    padding-top: 20px;
-    z-index: 1030;
-    overflow-y: auto;
-    transition: left 0.3s ease;
-}
-.content {
-    padding: 20px;
-}
-@media (max-width: 992px) {
-    .sidebar {
-        left: -250px;
-    }
-    .sidebar.active {
-        left: 0;
-    }
-    .botaoSidebar {
-        display: block;
-    }
+    padding: 58px 0 0; /* Height of navbar */
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+    width: 240px;
+    z-index: 1200;
+    transition: width 0.5s ease; /* Adiciona a transição */
 }
 
-.row{
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 100px;
+.sidebar .active {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
 .sidebar-ativo {
     background-color: #2471ee;
     color: white;
 }
-
+.row{
+    justify-content: center !important;
+}
 .row-imagem{
     display: flex;
     justify-content: center;
+}
+
+@media only screen and (min-width: 200px) {
+    main {
+        margin-top: 22% ;
+    }
+    .navbar{
+        height: 5% !important;
+    }
+
+}
+
+@media only screen and (min-width: 991.98px) {
+    .sidebar {
+        width: 15%;
+    }
+    main {
+        margin-top: 10%;
+    }
+}
+@media only screen and (min-width: 992px){
+    main{
+        margin-top: 6%;
+    }
+    .navbar{
+        height: 7% !important;
+    }
+}
+.user-menu {
+    position: absolute;
+    transform: translateX(-60%);
+    left: 0;
+    top: 100%;
 }

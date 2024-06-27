@@ -2,7 +2,9 @@ package com.saga.crm.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Perguntas {
@@ -13,6 +15,8 @@ public class Perguntas {
     private String titulo;
     private String descricao;
 
+    private Integer importante = 0;
+
     @ManyToOne
     private Eixo eixo;
 
@@ -22,13 +26,20 @@ public class Perguntas {
     @ManyToOne
     private Setor setor;
 
-    public Perguntas(Long id, String titulo, String descricao, Eixo eixo, Porte porte, Setor setor) {
+    @OneToMany(mappedBy = "perguntas")
+    private Set<ChecklistPerguntas> checklistPerguntas;
+
+    @OneToMany(mappedBy = "pergunta")
+    private List<Respostas> respostas;
+
+    public Perguntas(Long id, String titulo, String descricao, Eixo eixo, Porte porte, Setor setor, Set<ChecklistPerguntas> checklistPerguntas) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.eixo = eixo;
         this.porte = porte;
         this.setor = setor;
+        this.checklistPerguntas = checklistPerguntas;
     }
 
     public Perguntas() {
@@ -95,4 +106,21 @@ public class Perguntas {
     public void setSetor(Setor setor) {
         this.setor = setor;
     }
+
+    public Set<ChecklistPerguntas> getChecklistPerguntas() {
+        return checklistPerguntas;
+    }
+
+    public void setChecklistPerguntas(Set<ChecklistPerguntas> checklistPerguntas) {
+        this.checklistPerguntas = checklistPerguntas;
+    }
+
+    public Integer getImportante() {
+        return importante;
+    }
+
+    public void setImportante(Integer importante) {
+        this.importante = importante;
+    }
 }
+

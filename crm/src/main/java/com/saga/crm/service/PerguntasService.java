@@ -34,4 +34,13 @@ public class PerguntasService {
     public void excluirPergunta(Long id) {
         perguntasRepository.deleteById(id);
     }
+
+    public List<Perguntas> filtrarPerguntas(Long eixoId, Long setorId, Long porteId) {
+        if (eixoId == null && setorId == null && porteId == null) {
+            return getAllPerguntas();
+        } else {
+            return perguntasRepository.findByEixoIdAndSetorIdAndPorteId(eixoId, setorId, porteId);
+        }
+    }
+
 }

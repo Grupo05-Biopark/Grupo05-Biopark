@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checklists</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/select2.css}" rel="stylesheet">
+
+    <style>
+        /*INPUT DE PESQUISA E BOTAO DE REGISTRO*/
+        .dataTables_wrapper .dataTables_filter input {
+            margin-right: 2.5em;
+            border-radius: 5px;
+            border: 2px solid #0a58ca;
+            padding: 2px;
+            margin-bottom:  10px;
+            background-color: #ffffff;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            padding-left: 10px;
+            border: 2px solid #0a58ca;
+            background-color: #FFFFFF;
+        }
+
+        /*EDITAR LETRAS DE CIMA*/
+        div.dataTables_wrapper div.dataTables_length label {
+            font-size: 15px;
+            color: #333;
+            padding-left: 10px;
+        }
+        div.dataTables_wrapper div.dataTables_filter label {
+            font-size: 15px;
+            color: #333;
+        }
+        /*INFORMACOES ESQUERDO EMBAIXO*/
+        div.dataTables_wrapper div.dataTables_info {
+            padding-top: 4px;
+            padding-left: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #dee2e6;
+        }
+        /*VEIO CONFIGURADO E ACHO Q TA MASSA (ANTERIOR E PRÓXIMO)*/
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.2rem 0.75rem;
+            border-radius: 50%; /* Forma circular */
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #2471ee;
+            color: white !important;
+            border-radius: 20px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #2471ee;
+            color: white !important;
+            border-radius: 20px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<header>
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button data-mdb-button-init
+                    class="navbar-toggler"
+                    type="button"
+                    data-mdb-collapse-init
+                    data-mdb-target="#sidebarMenu"
+                    aria-controls="sidebarMenu"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Right links -->
+            <ul class="navbar-nav ms-auto d-flex flex-row">
+                <!-- Avatar -->
+                <li class="nav-item dropdown" id="dropdownUser">
+                    <a
+                            data-mdb-dropdown-init class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center"
+                            href="#"
+                            id="navbarDropdownMenuLink"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        <i class="fa-solid fa-circle-user fa-2xl"></i>
+                    </a>
+                    <ul
+                            class="dropdown-menu user-menu dropdown-menu-start"
+                            aria-labelledby="navbarDropdownMenuLink"
+                    >
+                        <li>
+                            <a class="dropdown-item" href="http://localhost:8080/user/profile">Meu Perfil</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/logout}">Sair</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-3 mt-4">
+                <div class="row-imagem" >
+                    <img th:src="@{/images/saga.png}" alt="Saga Image" />
+                </div>
+                <div class="list-group" style="margin-top: 8%;">
+                    <div class="list-group-item list-group-item-action" style="color: inherit !important;text-decoration: none !important;" >
+                        <a href="/dashboard" style="border: 0px; color: inherit !important;text-decoration: none !important;" class="list-group">Dashboard</a>
+                    </div>
+                    <div class="list-group-item list-group-item-action" style="color: inherit !important;text-decoration: none !important;" >
+                        <a href="/perguntas" style="border: 0px; color: inherit !important;text-decoration: none !important;" class="list-group">Perguntas</a>
+                    </div>
+                    <div class="list-group-item list-group-item-action dropdown-toggle" id="dropdownEmpresas">
+                        Empresas
+                        <div class="dropdown-menu" aria-labelledby="dropdownEmpresas">
+                            <a class="dropdown-item" href="/empresas">Adicionar</a>
+                            <a class="dropdown-item" href="/empresas/listar">Listar</a>
+                        </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action dropdown-toggle " id="dropdownChecklists">
+                        Checklists
+                        <div class="dropdown-menu" aria-labelledby="dropdownChecklists">
+                            <a class="dropdown-item" href="/checklists">Adicionar</a>
+                            <a class="dropdown-item" href="/checklists/listar">Listar</a>
+                        </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action dropdown-toggle" id="dropdownFormularios">
+                        Formulários
+                        <div class="dropdown-menu" aria-labelledby="dropdownFormularios">
+                            <a class="dropdown-item" href="/formulario">Adicionar</a>
+                            <a class="dropdown-item" href="/formulario/listar">Listar</a>
+                        </div>
+                    </div>
+                    <div class="list-group-item list-group-item-action sidebar-ativo" style="color: inherit !important;text-decoration: none !important;" >
+                        <a href="/certificados/index" style="border: 0px; color: white !important;text-decoration: none !important;" class="list-group">Certificados</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container pt-4">
+        <div class="row">
+            <div class="col-md-9 col-sm-12" style="margin-left: 3%">
+                <div class="row text-center" style="margin-top: 7%; margin-bottom: 2%">
+                    <h2>Certificados</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="certificadosTable" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Formulário</th>
+                                <th scope="col">Nota Ambiental</th>
+                                <th scope="col">Nota Governança</th>
+                                <th scope="col">Nota Social</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="certificado : ${certificados}">
+                                    <td class="align-middle" th:text="${certificado.id}"></td>
+                                    <td class="align-middle" th:text="${certificado.formulario.titulo}"></td>
+                                    <td class="text-center align-middle">
+                                        <span th:if="${certificado.nota_amb == 3}" class="badge bg-danger text-center">Não Conforme</span>
+                                        <span th:if="${certificado.nota_amb == 2}" class="badge bg-warning text-center">Médio</span>
+                                        <span th:if="${certificado.nota_amb == 1}" class="badge bg-success text-center">Conforme</span>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span th:if="${certificado.nota_gov == 3}" class="badge bg-danger text-center">Não Conforme</span>
+                                        <span th:if="${certificado.nota_gov == 2}" class="badge bg-warning text-center">Médio</span>
+                                        <span th:if="${certificado.nota_gov == 1}" class="badge bg-success text-center">Conforme</span>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span th:if="${certificado.nota_soc == 3}" class="badge bg-danger text-center">Não Conforme</span>
+                                        <span th:if="${certificado.nota_soc == 2}" class="badge bg-warning text-center">Médio</span>
+                                        <span th:if="${certificado.nota_soc == 1}" class="badge bg-success text-center">Conforme</span>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span th:if="${certificado.aprovado == false}" class="badge bg-danger text-center">Reprovado</span>
+                                        <span th:if="${certificado.aprovado == true}" class="badge bg-success text-center">Aprovado</span>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <a th:if="${certificado.aprovado == true}" th:href="@{'/certificados/' + ${certificado.id}+ '/emitir' }" class="btn btn-success" style="font-size: 16px"><i class="fa-solid fa-file-arrow-down" style="color: #ffffff;"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/script.js}"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $('#certificadosTable').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": false,
+        "info": true,
+        "autoWidth": false,
+        "pageLength": 10, // Número de linhas por página
+        "language": {
+            "paginate": {
+                "first": "Primeiro",
+                "last": "Último",
+                "next": "Próximo",
+                "previous": "Anterior"
+            },
+            "search": "Pesquisar:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ certificados",
+            "infoEmpty": "Mostrando 0 a 0 de 0 empresas",
+            "lengthMenu": "Mostrar _MENU_ registros por página"
+        }
+    });
+</script>
+</body>
+<!-- Modal -->
+</html>
+

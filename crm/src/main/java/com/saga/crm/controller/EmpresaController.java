@@ -7,11 +7,14 @@ import com.saga.crm.service.EmpresaService;
 import com.saga.crm.service.PorteService;
 import com.saga.crm.service.SetorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EmpresaController {
@@ -42,6 +45,12 @@ public class EmpresaController {
     public String adicionarEmpresa(Empresa empresa) {
         empresaService.cadastrarEmpresa(empresa);
         return "redirect:/empresas";
+    }
+
+    @GetMapping("/verificarCnpj")
+    public ResponseEntity<Boolean> verificarCnpj(@RequestParam String cnpj) {
+        boolean cnpjCadastrado = empresaService.cnpjJaCadastrado(cnpj);
+        return ResponseEntity.ok(cnpjCadastrado);
     }
 
     @GetMapping("/empresas/listar")
@@ -79,5 +88,26 @@ public class EmpresaController {
     public String excluirEmpresa(@PathVariable Long id) {
         empresaService.excluirEmpresa(id);
         return "redirect:/empresas/listar";
+    }
+
+    @GetMapping("/empresas/porte")
+    public ResponseEntity<Map<String, Long>> getEmpresasPorPorte() {
+        Map<String, Long> empresasPorPorte = empresaService.getEmpresasPorPorte();
+        return ResponseEntity.ok(empresasPorPorte);
+    }
+    @GetMapping("/empresas/setor")
+    public ResponseEntity<Map<String, Long>> getEmpresasPorSetor() {
+        Map<String, Long> empresasPorSetor = empresaService.getEmpresasPorSetor();
+        return ResponseEntity.ok(empresasPorSetor);
+    }
+    @GetMapping("/empresas/total")
+    public ResponseEntity<Long> getTotalEmpresas() {
+        long totalEmpresas = empresaService.getAllEmpresas().size();
+        return ResponseEntity.ok(totalEmpresas);
+    }
+    @GetMapping("/empresas/mes")
+    public ResponseEntity<List<Object[]>> getParecerEmpresasPorMes() {
+        List<Object[]> parecer = empresaService.countEmpresasByDataCadastro();
+        return ResponseEntity.ok(parecer);
     }
 }

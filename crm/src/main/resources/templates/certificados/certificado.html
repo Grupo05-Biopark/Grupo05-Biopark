@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Certificado</title>
+    <style>
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            width: 80%;
+            margin: auto;
+            margin-top: 15%;
+        }
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        h3, p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<table style="margin-top: 30%">
+    <tr>
+        <td colspan="3">
+            <img src="http://localhost:8080/images/saga.png" alt="Saga Image" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Razão Social:</span>
+                <span th:text="${certificado.empresa.razaoSocial}"></span>
+            </p>
+        </td>
+        <td>
+            <p>
+                <span style="font-weight: bold; font-size: 16px">CNPJ:</span>
+                <span th:text="${certificado.empresa.cnpj}"></span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Data de Emissão:</span>
+                <span th:text="${#dates.format(certificado.data, 'dd/MM/yyyy')}"></span>
+            </p>
+        </td>
+        <td>
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Status:</span>
+                <span>Aprovado</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Formulário:</span>
+                <span th:text="${certificado.formulario.titulo}"></span>
+            </p>
+        </td>
+        <td>
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Descrição:</span>
+                <span th:text="${certificado.formulario.descricao}"></span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td th:each="item : ${governancaChecklist}">
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Checklist Governança:</span>
+                <span th:text="${item.titulo}"></span>
+            </p>
+        </td>
+        <td th:each="item2 : ${ambientalChecklist}">
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Checklist Ambiental:</span>
+                <span th:text="${item2.titulo}"></span>
+            </p>
+
+        </td>
+        <td th:each="item3 : ${socialChecklist}">
+            <p>
+                <span style="font-weight: bold; font-size: 16px">Checklist Social:</span>
+                <span th:text="${item3.titulo}"></span>
+            </p>
+        </td>
+    </tr>
+    <!-- Adicione mais linhas conforme necessário -->
+</table>
+</body>
+</html>
