@@ -55,7 +55,7 @@ public class MainApplicationTests {
         pergunta.setSetor(setor);
 
 //        verificacao
-        assert pergunta.getId().equals(999L);
+        assert pergunta.getId().equals(10L);
         assert pergunta.getDescricao().equals(descricao);
         assert pergunta.getTitulo().equals(titulo);
         assert pergunta.getEixo().equals(eixo);
@@ -115,7 +115,5 @@ public class MainApplicationTests {
         assert certificado.getNota_amb().equals(notaAmb);
         assert certificado.getNota_soc().equals(notaSoc);
         assert certificado.getFormulario().equals(formulario);
-
-
     }
 }
